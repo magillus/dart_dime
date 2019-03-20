@@ -1,2 +1,4 @@
-# dart_dime
-Dime is dart Dependency Injection framework that works with DartVM and Flutter.
+# Dime - Dependency Injection for dart
+
+Flexible API for dependency injection that is created to support Dart and Flutter.
+
