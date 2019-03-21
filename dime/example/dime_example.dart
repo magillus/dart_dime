@@ -1,6 +1,8 @@
 import 'package:dime/dime.dart';
 import 'package:fimber/fimber.dart';
 
+import '../test/common.dart';
+
 main() {
   Fimber.plantTree(DebugTree.elapsed());
   Fimber.i("Started app");
@@ -40,14 +42,14 @@ main() {
   print(scopeDescription.text());
 }
 
-class ScopeModule extends BaseAppInjectorModule {
+class ScopeModule extends BaseDimeModule {
   @override
   void updateInjections() {
     addSingle(MyTitleService(title: "test scope service"));
   }
 }
 
-class ServiceModule extends BaseAppInjectorModule {
+class ServiceModule extends BaseDimeModule {
   @override
   void updateInjections() {
     addSingle(MyTitleService());
@@ -64,62 +66,4 @@ class MyCustomFactory extends InjectFactory<TextService> {
   TextService create() {
     return MyTooltipService(tooltip: "My custom factory tooltip");
   }
-}
-
-class MyDescriptionService extends TextService {
-  String description;
-
-  MyDescriptionService({this.description = "My description"});
-
-  @override
-  int someNumber() {
-    return 1;
-  }
-
-  @override
-  String text() {
-    return description;
-  }
-}
-
-class MyTooltipService extends TextService {
-  String tooltip;
-
-  MyTooltipService({this.tooltip = "empty tooltip"}) {
-    Fimber.i("Creatig instance of Tooltip Service: $tooltip");
-  }
-
-  @override
-  int someNumber() {
-    return tooltip.length;
-  }
-
-  @override
-  String text() {
-    return tooltip;
-  }
-}
-
-class MyTitleService extends TextService {
-  String title;
-
-  MyTitleService({this.title = "My text title"}) {
-    Fimber.i("Creating instance of MyTitleService: $title");
-  }
-
-  @override
-  int someNumber() {
-    return 0;
-  }
-
-  @override
-  String text() {
-    return this.title;
-  }
-}
-
-abstract class TextService {
-  String text();
-
-  int someNumber();
 }

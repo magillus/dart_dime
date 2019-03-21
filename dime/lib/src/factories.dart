@@ -2,7 +2,7 @@ import 'package:dime/dime.dart';
 import 'package:dime/src/common.dart';
 import 'package:fimber/fimber.dart';
 
-abstract class BaseAppInjectorModule with Closable {
+abstract class BaseDimeModule with Closable {
   final Map<Type, InjectFactory> _injectMap = {};
 
   Map<Type, InjectFactory> get injectMap => _injectMap;
@@ -72,9 +72,13 @@ abstract class BaseAppInjectorModule with Closable {
       Fimber.d("Injecting: $name for tag $tag with $instance");
       return instance;
     } else if (injectFactory != null && injectFactory is InjectFactory) {
-      var instance = injectFactory.create();
-      Fimber.d("Injecting: $name with $instance");
-      return instance;
+      if (tag != null && tag != InjectTagFactory.DEFAULT_TAG) {
+        return null; // not providing instance because tagged instance was expected.
+      } else {
+        var instance = injectFactory.create();
+        Fimber.d("Injecting: $name with $instance");
+        return instance;
+      }
     } else {
       return null;
     }
@@ -131,7 +135,7 @@ class SingleByTagInstanceFactory<T> extends TaggedSingletonInjectFactory<T> {
   @override
   T createForTag(String tag) {
     if (!taggedSingletons.containsKey(tag)) {
-      taggedSingletons[tag] = createTagged(tag);
+      return null;
     }
     return taggedSingletons[tag];
   }

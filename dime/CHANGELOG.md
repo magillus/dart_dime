@@ -1,7 +1,8 @@
-## 0.1 - initial release
+## 0.1.0 - initial release
 
 - Dependency Injection with global scope.
 - Inject with modules and sub-scopes's modules.
 - Support for modules and scopes.
+- Creator types, on demand injection
 - Ability to add singletons and singleton of same type per tag.
 - Closable types will be properly disposed when closing scopes

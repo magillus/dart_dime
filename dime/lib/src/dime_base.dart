@@ -1,15 +1,19 @@
 import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
+import 'package:fimber/fimber.dart';
 
-/// Main Dime entry call out
+/// Main Dime Dependency Injection Framework.
 class Dime {
   /// Global scope
   static DimeScope _rootScope = DimeScope("root");
 
+  /// Fetches a value and returns it base on [T] type and instance identifier [tag].
   static T injectWithTag<T>(String tag) {
     return inject(tag: tag);
   }
 
+  /// Fetches a value and returns based on [T] type and optional instance identifier [tag].
+  ///
   static T inject<T>({String tag}) {
     var instance = _rootScope._inject<T>(tag: tag);
     if (instance == null) {
@@ -18,16 +22,20 @@ class Dime {
       return instance;
   }
 
+  /// Adds child scope to this scope.
   static void addScope(DimeScope scope) {
     _rootScope.addScope(scope);
   }
 
+  /// Opens a scope by name,
+  /// will return the created scope.
   static DimeScope openScope(String name) {
     DimeScope scope = DimeScope(name);
     addScope(scope);
     return scope;
   }
 
+  /// Closes scope by name or scope
   static void closeScope({String name, DimeScope scope}) {
     if (name != null) {
       _rootScope.closeScope(name: name);
@@ -36,17 +44,24 @@ class Dime {
     }
   }
 
+  /// Clears all modules
   static void clearAll() {
+    _rootScope._modules.forEach(Closable.closeWith);
     _rootScope._modules.clear();
   }
 
-  static void uninstallModule(BaseAppInjectorModule module) {
+  /// Uninstalls module with closing any [Closeables] instances in the module
+  static void uninstallModule(BaseDimeModule module) {
     _rootScope._modules.remove(module);
   }
 
-  static void installModule(BaseAppInjectorModule module) {
-    _rootScope.installModule(module);
+  /// Installs module in the Dime root scope.
+  /// [override] if set True it will override any currently inject factory for the type/tag // todo implement
+  static void installModule(BaseDimeModule module,
+      {bool override = false}) {
+    _rootScope.installModule(module, override: override);
   }
+
 }
 
 /**
@@ -61,6 +76,8 @@ class Dime {
  */
 
 /// Dime Scope, will keep instances and modules for this scope
+/// Provides methods to install or uninstall Modules [installModule]/[uninstallModule]
+/// Provides methods to add/remove factories with Scope's default module.
 class DimeScope extends Closable {
   var _scopeModule = _DimeScopeModule();
 
@@ -74,14 +91,41 @@ class DimeScope extends Closable {
     installModule(_scopeModule);
   }
 
-  List<BaseAppInjectorModule> _modules = [];
+  List<BaseDimeModule> _modules = [];
 
-  installModule(BaseAppInjectorModule module) {
-    _modules.add(module);
+  installModule(BaseDimeModule module, {bool override = false}) {
     module.updateInjections();
+    if (override) {
+      // override this scope values
+      module.injectMap.keys.forEach((newModuleType) {
+        _modules.forEach((currentModule) {
+          if (currentModule.injectMap.containsKey(newModuleType)) {
+            Fimber.i(
+                "Overriding $newModuleType in current module: $currentModule");
+            // todo  Do we need to resolve duplicate per tag?
+            // cleanup removed factory
+            Closable.closeWith(currentModule.injectMap[newModuleType]);
+            currentModule.injectMap.remove(newModuleType);
+          }
+        });
+      });
+    } else {
+      // detect duplicate for the type
+      module.injectMap.keys.forEach((newModuleType) {
+        _modules.forEach((currentModule) {
+          if (currentModule.injectMap.containsKey(newModuleType)) {
+            // todo Do we need resolve duplicates per tag?
+            // found duplicate
+            throw DimeException.message(
+                "Found duplicate type: $newModuleType inside current scope modules.");
+          }
+        });
+      });
+    }
+    _modules.add(module);
   }
 
-  uninstallModule(BaseAppInjectorModule module) {
+  uninstallModule(BaseDimeModule module) {
     _modules.remove(module);
     module.close();
   }
@@ -100,11 +144,11 @@ class DimeScope extends Closable {
     _scopeModule.addSingle(instance);
   }
 
-  add(Type type, InjectFactory factory) {
+  void add(Type type, InjectFactory factory) {
     _scopeModule.injectMap[type] = factory;
   }
 
-  remove(Type type) {
+  void remove(Type type) {
     _scopeModule.injectMap.remove(type);
   }
 
@@ -121,7 +165,7 @@ class DimeScope extends Closable {
     }
     T value;
     // check modules
-    for (BaseAppInjectorModule module in _modules) {
+    for (BaseDimeModule module in _modules) {
       value = module.inject<T>(tag: tag);
       if (value != null) return value;
     }
@@ -156,7 +200,7 @@ class DimeScope extends Closable {
   }
 }
 
-class _DimeScopeModule extends BaseAppInjectorModule {
+class _DimeScopeModule extends BaseDimeModule {
   @override
   void updateInjections() {
     // empty
