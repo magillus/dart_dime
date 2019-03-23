@@ -4,6 +4,7 @@ Dime allows to create modules and inject based on interfaces, provides way to sp
 Support for multiple modules and scopes with `Closable` interface to cleanup resources.
 
 Get it from pub page: [Pub dime page](https://pub.dartlang.org/packages/dime)
+
 __Note__: 
 All examples below are from [example file](example/dime_example.dart) file. Go there for high level view.
 
