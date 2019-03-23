@@ -60,7 +60,8 @@ class DimeScopeTests {
     DimeScope scope2;
     DimeScope scope21;
     DimeScope scope22;
-    group('Dime inject', () {
+
+    group('Dime inject - scoped', () {
       setUp(() {
         Dime.clearAll();
         Dime.installModule(ModuleC());
@@ -78,7 +79,7 @@ class DimeScopeTests {
         scope22.installModule(ModuleB());
       });
 
-      test('test Dime injects', () {
+      test('test multiple scopes levels injects', () {
         expect(Dime.inject<CA>().runtimeType, CA);
         expect(Dime.inject<AA>().runtimeType, AA);
         expect(Dime.inject<CC>().runtimeType, CC);
