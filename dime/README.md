@@ -3,6 +3,7 @@ Dime is Dart based Dependency Injection framwork.
 Dime allows to create modules and inject based on interfaces, provides way to specify factory methods and tag based same type instances.
 Support for multiple modules and scopes with `Closable` interface to cleanup resources.
 
+Get it from pub page: [Pub dime page](https://pub.dartlang.org/packages/dime)
 __Note__: 
 All examples below are from [example file](example/dime_example.dart) file. Go there for high level view.
 
@@ -32,7 +33,7 @@ void main() {
 ```yaml
  depedency: 
    ...
-   dime: ^0.1
+   dime: ^0.1.1
    ...
 ```
 

@@ -1,3 +1,8 @@
+## 0.1.1 - Scopes updates
+
+- allow override module's instances for a types.
+- Unit tests update
+
 ## 0.1.0 - initial release
 
 - Dependency Injection with global scope.
