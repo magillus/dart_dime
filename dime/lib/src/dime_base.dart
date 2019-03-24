@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
@@ -10,6 +12,10 @@ class Dime {
   /// Fetches a value and returns it base on [T] type and instance identifier [tag].
   static T injectWithTag<T>(String tag) {
     return inject(tag: tag);
+  }
+
+  static FutureOr<T> promise<T>({String tag}) {
+    return null;
   }
 
   /// Fetches a value and returns based on [T] type and optional instance identifier [tag].
@@ -94,6 +100,7 @@ class DimeScope extends Closable {
   List<BaseDimeModule> _modules = [];
 
   installModule(BaseDimeModule module, {bool override = false}) {
+    _modules.add(module);
     module.updateInjections();
     if (override) {
       // override this scope values
@@ -113,7 +120,8 @@ class DimeScope extends Closable {
       // detect duplicate for the type
       module.injectMap.keys.forEach((newModuleType) {
         _modules.forEach((currentModule) {
-          if (currentModule.injectMap.containsKey(newModuleType)) {
+          if (currentModule != module &&
+              currentModule.injectMap.containsKey(newModuleType)) {
             // todo Do we need resolve duplicates per tag?
             // found duplicate
             throw DimeException.message(
@@ -122,7 +130,6 @@ class DimeScope extends Closable {
         });
       });
     }
-    _modules.add(module);
   }
 
   uninstallModule(BaseDimeModule module) {

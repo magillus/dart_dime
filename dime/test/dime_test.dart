@@ -133,7 +133,7 @@ class SameModuleDep extends BaseDimeModule {
     addSingle(MyTooltipService());
     addSingle(MyTitleService());
     addSingle(MyDescriptionService());
-    addSingle(DetailsService()); // <-filas
+    addSingle(DetailsService());
   }
 }
 
