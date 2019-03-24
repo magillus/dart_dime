@@ -94,6 +94,7 @@ class DimeScope extends Closable {
   List<BaseDimeModule> _modules = [];
 
   installModule(BaseDimeModule module, {bool override = false}) {
+    _modules.add(module);
     module.updateInjections();
     if (override) {
       // override this scope values
@@ -113,7 +114,8 @@ class DimeScope extends Closable {
       // detect duplicate for the type
       module.injectMap.keys.forEach((newModuleType) {
         _modules.forEach((currentModule) {
-          if (currentModule.injectMap.containsKey(newModuleType)) {
+          if (currentModule != module &&
+              currentModule.injectMap.containsKey(newModuleType)) {
             // todo Do we need resolve duplicates per tag?
             // found duplicate
             throw DimeException.message(
@@ -122,7 +124,6 @@ class DimeScope extends Closable {
         });
       });
     }
-    _modules.add(module);
   }
 
   uninstallModule(BaseDimeModule module) {

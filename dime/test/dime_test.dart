@@ -111,7 +111,30 @@ void main() {
     });
   });
 
+  group("Dime inject within module", () {
+    setUp(() {
+      Dime.clearAll();
+      //Dime.installModule(SinglesModule());
+    });
+    test("Single module dependency", () {
+      Dime.installModule(SameModuleDep());
+      expect(Dime
+          .inject<DetailsService>()
+          .runtimeType, DetailsService);
+    });
+  });
+
   DimeScopeTests.testScopes();
+}
+
+class SameModuleDep extends BaseDimeModule {
+  @override
+  void updateInjections() {
+    addSingle(MyTooltipService());
+    addSingle(MyTitleService());
+    addSingle(MyDescriptionService());
+    addSingle(DetailsService());
+  }
 }
 
 class SinglesModule_Copy extends BaseDimeModule {
