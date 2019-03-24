@@ -1,3 +1,4 @@
+import 'package:dime/dime.dart';
 import 'package:fimber/fimber.dart';
 import 'package:test/test.dart';
 
@@ -70,4 +71,10 @@ abstract class TextService {
   String text();
 
   int someNumber();
+}
+
+class DetailsService {
+  TextService title = Dime.inject<MyTitleService>();
+  TextService description = Dime.inject<MyDescriptionService>();
+  TextService tooltip = Dime.inject<MyTooltipService>();
 }
