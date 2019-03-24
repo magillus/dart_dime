@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
@@ -12,10 +10,6 @@ class Dime {
   /// Fetches a value and returns it base on [T] type and instance identifier [tag].
   static T injectWithTag<T>(String tag) {
     return inject(tag: tag);
-  }
-
-  static FutureOr<T> promise<T>({String tag}) {
-    return null;
   }
 
   /// Fetches a value and returns based on [T] type and optional instance identifier [tag].
