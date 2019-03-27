@@ -1,4 +1,6 @@
-Dime is Dart based Dependency Injection framwork.
+Dime is Dart based Dependency Injection framework.
+
+[![Codemagic build status](https://api.codemagic.io/apps/5c9bf47dda789b001599fcef/5c9bf47dda789b001599fcee/status_badge.svg)](https://codemagic.io/apps/5c9bf47dda789b001599fcef/5c9bf47dda789b001599fcee/latest_build)
 
 Dime allows to create modules and inject based on interfaces, provides way to specify factory methods and tag based same type instances.
 Support for multiple modules and scopes with `Closable` interface to cleanup resources.
