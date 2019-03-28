@@ -100,7 +100,8 @@ class DimeScope extends Closable {
       // override this scope values
       module.injectMap.keys.forEach((newModuleType) {
         _modules.forEach((currentModule) {
-          if (currentModule.injectMap.containsKey(newModuleType)) {
+          if (currentModule != module &&
+              currentModule.injectMap.containsKey(newModuleType)) {
             Fimber.i(
                 "Overriding $newModuleType in current module: $currentModule");
             // todo  Do we need to resolve duplicate per tag?

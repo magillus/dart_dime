@@ -1,3 +1,7 @@
+## 0.2.0 - Bug fix
+
+- added same module injection visible to next injections
+
 ## 0.1.1 - Scopes updates
 
 - allow override module's instances for a types.
