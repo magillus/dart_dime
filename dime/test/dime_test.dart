@@ -29,8 +29,8 @@ void main() {
 
     test('inject on class MyDescriptionService', () {
       try {
-        MyDescriptionService textService = Dime.inject();
-      } catch (e, t) {
+        Dime.inject<MyDescriptionService>();
+      } catch (e) {
         assert(e is DimeException);
         return;
       }
@@ -47,7 +47,7 @@ void main() {
     test('add new module', () {
       try {
         Dime.installModule(SinglesModule_Copy());
-      } catch (e, t) {
+      } catch (e) {
         expect(e.runtimeType, DimeException);
         return;
       }
@@ -90,8 +90,8 @@ void main() {
 
     test('inject with unkown tag', () {
       try {
-        MyTitleService titleService = Dime.injectWithTag("Some random Tag");
-      } catch (e, t) {
+        Dime.injectWithTag<MyTitleService>("Some random Tag");
+      } catch (e) {
         expect(e.runtimeType, DimeException);
         return;
       }
@@ -102,7 +102,7 @@ void main() {
     test('inject with tag on untagged instance', () {
       try {
         Dime.injectWithTag<TextService>("Test");
-      } catch (e, t) {
+      } catch (e) {
         expect(e.runtimeType, DimeException);
         return;
       }
