@@ -17,9 +17,11 @@ import 'package:dime/dime.dart';
 
 void main() {
   /// Service Module does include details how to create the objects.   
-  Dime.installModule(ServiceModule());
+  dimeInstall(ServiceModule());
      
-  MyTitleService titleService = Dime.get();
+  MyTitleService titleService = dimeGet();
+  // or 
+  var titleService = dimeGet<MyTitleService>();
   print(titleService.text());
   
 }
@@ -85,7 +87,7 @@ get singleton value by implementing interface:
 
 This is creator - which will create an object at time of getion.
 ```dart
-typedef T Creator<T>(String tag);
+typedef Creator<T> = T Function(String tag);
 ```
 
 The Creator provides optional `String tag` that may be used to create the tagged instance.
@@ -124,10 +126,8 @@ When a scope closes all modules in that scope will also close (clean up) by call
 #### Add Module to Global Dime scope.
 
 ```dart
-  Dime.installModule(ServiceModule());
+  dimeInstall(ServiceModule());
 ```
-
-
 
 
 ## Features and bugs
