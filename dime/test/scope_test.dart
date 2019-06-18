@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'common.dart';
 
 // if executed directly.
-main() {
+void main() {
   DimeScopeTests.testScopes();
 }
 
@@ -52,10 +52,12 @@ main() {
 /// scope22.inject<CB> -> scope2.ModuleC.CB
 /// scope21.inject<BB> -> dime.ModuleX.BB
 ///
-/// todo should we allow go down the tree? how to resolve duplicate on same level
+/// todo should we allow go down the tree?
+/// todo how to resolve duplicate on same level
 ///
 class DimeScopeTests {
-  static testScopes() {
+
+  static void testScopes() {
     DimeScope scope1;
     DimeScope scope2;
     DimeScope scope21;
@@ -83,6 +85,7 @@ class DimeScopeTests {
         expect(Dime.inject<CA>().runtimeType, CA);
         expect(Dime.inject<AA>().runtimeType, AA);
         expect(Dime.inject<CC>().runtimeType, CC);
+        // ignore: unnecessary_lambdas
         expectException(() => Dime.inject<AB>(), DimeException);
 
         expect(scope2.inject<CA>().runtimeType, CA);

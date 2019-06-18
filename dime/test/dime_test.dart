@@ -14,14 +14,14 @@ void main() {
     });
 
     test('inject on Interface Test', () {
-      TextService textService = Dime.inject();
+      var textService = Dime.inject<TextService>();
       assert(textService != null);
       assert(textService is MyDescriptionService);
       expect(textService.text(), "Some description for tests.");
     });
 
     test('inject on class MyTitleService', () {
-      MyTitleService textService = Dime.inject();
+      var textService = Dime.inject<MyTitleService>();
       assert(textService != null);
       assert(textService is MyTitleService);
       expect(textService.text(), "My text title");
@@ -30,6 +30,7 @@ void main() {
     test('inject on class MyDescriptionService', () {
       try {
         Dime.inject<MyDescriptionService>();
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         assert(e is DimeException);
         return;
@@ -38,7 +39,7 @@ void main() {
     });
 
     test('inject on class MyTooltipService', () {
-      MyTooltipService textService = Dime.inject();
+      var textService = Dime.inject<MyTooltipService>();
       assert(textService != null);
       assert(textService is MyTooltipService);
       expect(textService.text(), "test tooltip");
@@ -46,7 +47,8 @@ void main() {
 
     test('add new module', () {
       try {
-        Dime.installModule(SinglesModule_Copy());
+        Dime.installModule(SinglesModuleCopy());
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         expect(e.runtimeType, DimeException);
         return;
@@ -55,20 +57,20 @@ void main() {
           reason: "Expecting DimeException thrown error for duplicates.");
     });
     test('add override from new module', () {
-      Dime.installModule(SinglesModule_Copy(), override: true);
+      Dime.installModule(SinglesModuleCopy(), override: true);
 
-      TextService textService = Dime.inject();
+      var textService = Dime.inject<TextService>();
       assert(textService != null);
       assert(textService is MyDescriptionService);
       expect(textService.text(), "Some description for tests. COPY");
 
-      MyTitleService titleService = Dime.inject();
+      var titleService = Dime.inject<MyTitleService>();
       assert(titleService != null);
       assert(titleService is MyTitleService);
       expect(titleService.text(), "Test title_COPY");
 
       // instance not replaced by new module override
-      MyTooltipService tooltipService = Dime.inject();
+      var tooltipService = Dime.inject<MyTooltipService>();
       assert(tooltipService != null);
       assert(tooltipService is MyTooltipService);
       expect(tooltipService.text(), "test tooltip");
@@ -82,7 +84,7 @@ void main() {
     });
 
     test('inject with tag', () {
-      MyTitleService titleService = Dime.injectWithTag("Test tag");
+      var titleService = Dime.injectWithTag<MyTitleService>("Test tag");
       assert(titleService != null);
       assert(titleService is MyTitleService);
       expect(titleService.text(), "second title");
@@ -91,6 +93,7 @@ void main() {
     test('inject with unkown tag', () {
       try {
         Dime.injectWithTag<MyTitleService>("Some random Tag");
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         expect(e.runtimeType, DimeException);
         return;
@@ -102,6 +105,7 @@ void main() {
     test('inject with tag on untagged instance', () {
       try {
         Dime.injectWithTag<TextService>("Test");
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         expect(e.runtimeType, DimeException);
         return;
@@ -112,9 +116,9 @@ void main() {
   });
 
   group("Dime inject within module", () {
+    // ignore: unnecessary_lambdas
     setUp(() {
       Dime.clearAll();
-      //Dime.installModule(SinglesModule());
     });
     test("Single module dependency", () {
       Dime.installModule(SameModuleDep());
@@ -137,7 +141,7 @@ class SameModuleDep extends BaseDimeModule {
   }
 }
 
-class SinglesModule_Copy extends BaseDimeModule {
+class SinglesModuleCopy extends BaseDimeModule {
   @override
   void updateInjections() {
     addSingle(MyTitleService(title: "Test title_COPY"));
