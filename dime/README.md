@@ -34,7 +34,7 @@ void main() {
 ```yaml
  depedency: 
    ...
-   dime: ^0.2.0
+   dime: ^0.3.0
    ...
 ```
 
@@ -45,8 +45,8 @@ Create a module and how it creates its dependencies:
 ```dart
 class MyModule  extends BaseAppgetorModule {
     @override
-    void updategetions() {
-        /// define getion factories - below for examples      
+    void updateInjections() {
+        /// define injection factories - below for examples      
     }
 }
 
