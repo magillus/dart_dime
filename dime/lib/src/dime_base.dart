@@ -69,55 +69,6 @@ class Dime {
   }
 }
 
-/// Global scope
-DimeScope _rootScope = DimeScope("root");
-
-/// Fetches a value and returns it base on [T] type
-/// and instance identifier [tag].
-T injectWithTag<T>(String tag) {
-  return inject(tag: tag);
-}
-
-/// Fetches a value and returns based on [T] type
-/// and optional instance identifier [tag].
-///
-T inject<T>({String tag}) {
-  var instance = _rootScope._inject<T>(tag: tag);
-  if (instance == null) {
-    throw DimeException.factoryNotFound(type: T);
-  } else {
-    return instance;
-  }
-}
-
-/// Adds child scope to this scope.
-void addScope(DimeScope scope) {
-  _rootScope.addScope(scope);
-}
-
-/// Opens a scope by name,
-/// will return the created scope.
-DimeScope openScope(String name) {
-  var scope = DimeScope(name);
-  addScope(scope);
-  return scope;
-}
-
-/// Closes scope by name or scope
-void closeScope({String name, DimeScope scope}) {
-  if (name != null) {
-    _rootScope.closeScope(name: name);
-  } else if (scope != null) {
-    _rootScope.closeScope(scope: scope);
-  }
-}
-
-/// Clears all modules
-void clearAll() {
-  _rootScope._modules.forEach(Closable.closeWith);
-  _rootScope._modules.clear();
-}
-
 /**
  * note to myself:
  *
