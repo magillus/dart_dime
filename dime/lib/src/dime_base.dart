@@ -44,8 +44,8 @@ class DimeScope extends Closable {
     module.updateInjections();
     if (override) {
       // override this scope values
-      module.injectMap.keys.forEach((newModuleType) {
-        _modules.forEach((currentModule) {
+      for (var newModuleType in module.injectMap.keys) {
+        for (var currentModule in _modules) {
           if (currentModule != module &&
               currentModule.injectMap.containsKey(newModuleType)) {
             Fimber.i(
@@ -55,12 +55,12 @@ class DimeScope extends Closable {
             Closable.closeWith(currentModule.injectMap[newModuleType]);
             currentModule.injectMap.remove(newModuleType);
           }
-        });
-      });
+        }
+      }
     } else {
       // detect duplicate for the type
-      module.injectMap.keys.forEach((newModuleType) {
-        _modules.forEach((currentModule) {
+      for (var newModuleType in module.injectMap.keys) {
+        for (var currentModule in _modules) {
           if (currentModule != module &&
               currentModule.injectMap.containsKey(newModuleType)) {
             // todo Do we need resolve duplicates per tag?
@@ -68,8 +68,8 @@ class DimeScope extends Closable {
             throw DimeException.message("Found duplicate type: $newModuleType "
                 "inside current scope modules.");
           }
-        });
-      });
+        }
+      }
     }
   }
 
