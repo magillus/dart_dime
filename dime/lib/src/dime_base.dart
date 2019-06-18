@@ -5,88 +5,6 @@ import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
 
-// ignore: avoid_classes_with_only_static_members
-/// Main Dime Dependency Injection Framework utility class
-/// After installing a module we can access module's instances via [get].
-///
-class Dime {
-  /// Global scope
-  static final DimeScope _rootScope = DimeScope("root");
-
-  /// Fetches a value and returns it base on [T] type
-  /// and instance identifier [tag].
-  static T getWithTag<T>(String tag) {
-    return get(tag: tag);
-  }
-
-  /// Fetches a value and returns it base on [T] type
-  /// and instance identifier [tag].
-  /// [Deprecated] - use [getWithTag] method.
-  @deprecated
-  static T injectWithTag<T>(String tag) {
-    return getWithTag(tag);
-  }
-
-  /// Fetches a value and returns based on [T] type
-  /// and optional instance identifier [tag].
-  static T get<T>({String tag}) {
-    var instance = _rootScope._get<T>(tag: tag);
-    if (instance == null) {
-      throw DimeException.factoryNotFound(type: T);
-    } else {
-      return instance;
-    }
-  }
-
-  /// Fetches a value and returns based on [T] type
-  /// and optional instance identifier [tag].
-  /// [Deprecated] - use [get] method.
-  @deprecated
-  static T inject<T>({String tag}) {
-    return get(tag: tag);
-  }
-
-  /// Adds child scope to this scope.
-  static void addScope(DimeScope scope) {
-    _rootScope.addScope(scope);
-  }
-
-  /// Opens a scope by name,
-  /// will return the created scope.
-  static DimeScope openScope(String name) {
-    var scope = DimeScope(name);
-    addScope(scope);
-    return scope;
-  }
-
-  /// Closes scope by name or scope
-  static void closeScope({String name, DimeScope scope}) {
-    if (name != null) {
-      _rootScope.closeScope(name: name);
-    } else if (scope != null) {
-      _rootScope.closeScope(scope: scope);
-    }
-  }
-
-  /// Clears all modules
-  static void clearAll() {
-    _rootScope._modules.forEach(Closable.closeWith);
-    _rootScope._modules.clear();
-  }
-
-  /// Uninstalls module with closing any [Closable] instances in the module
-  static void uninstallModule(BaseDimeModule module) {
-    _rootScope._modules.remove(module);
-  }
-
-  /// Installs [module] in the Dime root scope.
-  /// [override] if set True it will override any currently inject
-  /// factory for the type/tag
-  static void installModule(BaseDimeModule module, {bool override = false}) {
-    _rootScope.installModule(module, override: override);
-  }
-}
-
 /**
  * note to myself:
  *
@@ -197,14 +115,21 @@ class DimeScope extends Closable {
     for (var module in _modules) {
       module.close();
     }
-    _scopes.forEach((scope) => scope.close());
+    _modules.clear();
+    for (var scope in _scopes) {
+      scope.close();
+    }
+    _scopes.clear();
     _wasClosed = true;
   }
 
+  /// Resets scops.
+  void reset() {
+    close();
+    _wasClosed = false;
+  }
+
   T _get<T>({String tag}) {
-    if (_wasClosed) {
-      throw DimeException.scopeClosed(scope: this);
-    }
     T value;
     // check modules
     for (var module in _modules) {
@@ -212,6 +137,7 @@ class DimeScope extends Closable {
       if (value != null) return value;
     }
     if (value == null) {
+      // try parent scope if exists
       return _parent?.get<T>(tag: tag);
     }
     return null;

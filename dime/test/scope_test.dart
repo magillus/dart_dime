@@ -56,7 +56,6 @@ void main() {
 /// todo how to resolve duplicate on same level
 ///
 class DimeScopeTests {
-
   static void testScopes() {
     DimeScope scope1;
     DimeScope scope2;
@@ -65,13 +64,13 @@ class DimeScopeTests {
 
     group('Dime inject - scoped', () {
       setUp(() {
-        Dime.clearAll();
-        Dime.installModule(ModuleC());
-        Dime.installModule(ModuleXX(), override: true);
-        scope1 = Dime.openScope("1");
+        dimeReset();
+        dimeInstall(ModuleC());
+        dimeInstall(ModuleXX(), override: true);
+        scope1 = dimeOpenScope("1");
         scope1.installModule(ModuleA());
         scope1.installModule(ModuleB());
-        scope2 = Dime.openScope("2");
+        scope2 = dimeOpenScope("2");
         scope2.installModule(ModuleA());
         scope2.installModule(ModuleC());
         scope21 = scope2.openScope("1");
@@ -82,17 +81,11 @@ class DimeScopeTests {
       });
 
       test('test multiple scopes levels injects', () {
-        expect(Dime
-            .get<CA>()
-            .runtimeType, CA);
-        expect(Dime
-            .get<AA>()
-            .runtimeType, AA);
-        expect(Dime
-            .get<CC>()
-            .runtimeType, CC);
+        expect(dimeGet<CA>().runtimeType, CA);
+        expect(dimeGet<AA>().runtimeType, AA);
+        expect(dimeGet<CC>().runtimeType, CC);
         // ignore: unnecessary_lambdas
-        expectException(() => Dime.get<AB>(), DimeException);
+        expectException(() => dimeGet<AB>(), DimeException);
 
         expect(scope2
             .get<CA>()

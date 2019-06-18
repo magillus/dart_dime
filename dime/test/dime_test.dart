@@ -9,19 +9,19 @@ void main() {
   Fimber.plantTree(DebugTree());
   group('Dime inject', () {
     setUp(() {
-      Dime.clearAll();
-      Dime.installModule(SinglesModule());
+      dimeReset();
+      dimeInstall(SinglesModule());
     });
 
     test('inject on Interface Test', () {
-      var textService = Dime.get<TextService>();
+      var textService = dimeGet<TextService>();
       assert(textService != null);
       assert(textService is MyDescriptionService);
       expect(textService.text(), "Some description for tests.");
     });
 
     test('inject on class MyTitleService', () {
-      var textService = Dime.get<MyTitleService>();
+      var textService = dimeGet<MyTitleService>();
       assert(textService != null);
       assert(textService is MyTitleService);
       expect(textService.text(), "My text title");
@@ -29,7 +29,7 @@ void main() {
 
     test('inject on class MyDescriptionService', () {
       try {
-        Dime.get<MyDescriptionService>();
+        dimeGet<MyDescriptionService>();
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         assert(e is DimeException);
@@ -39,7 +39,7 @@ void main() {
     });
 
     test('inject on class MyTooltipService', () {
-      var textService = Dime.get<MyTooltipService>();
+      var textService = dimeGet<MyTooltipService>();
       assert(textService != null);
       assert(textService is MyTooltipService);
       expect(textService.text(), "test tooltip");
@@ -47,7 +47,7 @@ void main() {
 
     test('add new module', () {
       try {
-        Dime.installModule(SinglesModuleCopy());
+        dimeInstall(SinglesModuleCopy());
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         expect(e.runtimeType, DimeException);
@@ -57,20 +57,20 @@ void main() {
           reason: "Expecting DimeException thrown error for duplicates.");
     });
     test('add override from new module', () {
-      Dime.installModule(SinglesModuleCopy(), override: true);
+      dimeInstall(SinglesModuleCopy(), override: true);
 
-      var textService = Dime.get<TextService>();
+      var textService = dimeGet<TextService>();
       assert(textService != null);
       assert(textService is MyDescriptionService);
       expect(textService.text(), "Some description for tests. COPY");
 
-      var titleService = Dime.get<MyTitleService>();
+      var titleService = dimeGet<MyTitleService>();
       assert(titleService != null);
       assert(titleService is MyTitleService);
       expect(titleService.text(), "Test title_COPY");
 
       // instance not replaced by new module override
-      var tooltipService = Dime.get<MyTooltipService>();
+      var tooltipService = dimeGet<MyTooltipService>();
       assert(tooltipService != null);
       assert(tooltipService is MyTooltipService);
       expect(tooltipService.text(), "test tooltip");
@@ -79,12 +79,12 @@ void main() {
 
   group('Dime inject - tagged', () {
     setUp(() {
-      Dime.clearAll();
-      Dime.installModule(SinglesModule());
+      dimeReset();
+      dimeInstall(SinglesModule());
     });
 
     test('inject with tag', () {
-      var titleService = Dime.getWithTag<MyTitleService>("Test tag");
+      var titleService = dimeGetWithTag<MyTitleService>("Test tag");
       assert(titleService != null);
       assert(titleService is MyTitleService);
       expect(titleService.text(), "second title");
@@ -92,7 +92,7 @@ void main() {
 
     test('inject with unkown tag', () {
       try {
-        Dime.getWithTag<MyTitleService>("Some random Tag");
+        dimeGetWithTag<MyTitleService>("Some random Tag");
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         expect(e.runtimeType, DimeException);
@@ -104,7 +104,7 @@ void main() {
 
     test('inject with tag on untagged instance', () {
       try {
-        Dime.getWithTag<TextService>("Test");
+        dimeGetWithTag<TextService>("Test");
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         expect(e.runtimeType, DimeException);
@@ -118,13 +118,11 @@ void main() {
   group("Dime inject within module", () {
     // ignore: unnecessary_lambdas
     setUp(() {
-      Dime.clearAll();
+      dimeReset();
     });
     test("Single module dependency", () {
-      Dime.installModule(SameModuleDep());
-      expect(Dime
-          .get<DetailsService>()
-          .runtimeType, DetailsService);
+      dimeInstall(SameModuleDep());
+      expect(dimeGet<DetailsService>().runtimeType, DetailsService);
     });
   });
 
