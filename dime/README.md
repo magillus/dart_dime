@@ -1,6 +1,8 @@
-Dime is Dart based Dependency getion framework.
+Dime is Dart Dependency injection framework.
 
-Dime allows to create modules and get based on interfaces, provides way to specify factory methods and tag based same type instances.
+Dime allows to create modules that define injection types and their InjectFactory implementations.
+It can easily base on interfaces which allows to pick different implementations. 
+Supports for tag tag based same type instances.
 Support for multiple modules and scopes with `Closable` interface to cleanup resources.
 
 Get it from pub page: [Pub dime page](https://pub.dartlang.org/packages/dime)
