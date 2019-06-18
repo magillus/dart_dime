@@ -2,12 +2,13 @@ import 'package:dime/dime.dart';
 import 'package:fimber/fimber.dart';
 import 'package:test/test.dart';
 
-typedef void Runner();
+typedef Runner = void Function();
 
-void expectException(Runner runner, type) {
-  var thrownException;
+void expectException(Runner runner, Type type) {
+  dynamic thrownException;
   try {
     runner();
+    // ignore: avoid_catches_without_on_clauses
   } catch (e) {
     thrownException = e;
   }
@@ -63,7 +64,7 @@ class MyTitleService extends TextService {
 
   @override
   String text() {
-    return this.title;
+    return title;
   }
 }
 

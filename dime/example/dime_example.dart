@@ -3,7 +3,8 @@ import 'package:fimber/fimber.dart';
 
 import '../test/common.dart';
 
-main() {
+/// Example app showing Dime installation and usage
+void main() {
   Fimber.plantTree(DebugTree.elapsed());
   Fimber.i("Started app");
   Dime.installModule(ServiceModule());
@@ -12,9 +13,11 @@ main() {
   scope.installModule(ScopeModule());
   Dime.addScope(scope);
 
+  // ignore: omit_local_variable_types
   MyTitleService titleService = Dime.inject();
   print(titleService.text());
 
+  // ignore: omit_local_variable_types
   MyTitleService titleService2 = Dime.inject(tag: "Test tag");
   print(titleService2.text());
 
