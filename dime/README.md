@@ -1,6 +1,6 @@
-Dime is Dart based Dependency Injection framework.
+Dime is Dart based Dependency getion framework.
 
-Dime allows to create modules and inject based on interfaces, provides way to specify factory methods and tag based same type instances.
+Dime allows to create modules and get based on interfaces, provides way to specify factory methods and tag based same type instances.
 Support for multiple modules and scopes with `Closable` interface to cleanup resources.
 
 Get it from pub page: [Pub dime page](https://pub.dartlang.org/packages/dime)
@@ -19,7 +19,7 @@ void main() {
   /// Service Module does include details how to create the objects.   
   Dime.installModule(ServiceModule());
      
-  MyTitleService titleService = Dime.inject();
+  MyTitleService titleService = Dime.get();
   print(titleService.text());
   
 }
@@ -43,47 +43,47 @@ void main() {
 Create a module and how it creates its dependencies:
 
 ```dart
-class MyModule  extends BaseAppInjectorModule {
+class MyModule  extends BaseAppgetorModule {
     @override
-    void updateInjections() {
-        /// define injection factories - below for examples      
+    void updategetions() {
+        /// define getion factories - below for examples      
     }
 }
 
 ```
 
-Below are examples that can be used inside `updateInjections` method.
+Below are examples that can be used inside `updategetions` method.
 
 #### Singleton per type
 
-Inject single value by its class type:
+get single value by its class type:
 
 ```dart
   addSingle(MyTitleService());
 ```
 
-Inject singleton value by implementing interface:
+get singleton value by implementing interface:
 ```dart
   addSingle<TitleService>(MyTitleService());
 ```
 
 #### Singleton per type with tag
 
-Inject single value by its class type:
+get single value by its class type:
 
 ```dart
   addSingle(MyTitleService(), tag: "home-title");
   addSingle(MyTitleService(), tag: "details-title");
 ```
 
-Inject singleton value by implementing interface:
+get singleton value by implementing interface:
 ```dart
   addSingle<TitleService>(MyTitleService(), tag: "home-title");
 ```
 
-#### Creator on-demand injection, it uses type of Creator
+#### Creator on-demand getion, it uses type of Creator
 
-This is creator - which will create an object at time of injection.
+This is creator - which will create an object at time of getion.
 ```dart
 typedef T Creator<T>(String tag);
 ```
@@ -94,7 +94,7 @@ The Creator provides optional `String tag` that may be used to create the tagged
 addCreator<TextService>((tag) =>
         MyTitleService(title: "Test title: $tag: now: ${DateTime.now()}"));
 ```
-#### Creator on-demand injection with singleton storage - delayed singleton.
+#### Creator on-demand getion with singleton storage - delayed singleton.
 
 Similar to above example with `addCreator`, however created instance will be cached per tag.
 
@@ -104,7 +104,7 @@ addSingleByCreator((tag)=>MyDescriptionService());
 
 #### Create your own factory.
 
-You can always create your own factory by extending `InjectFactory<T>` and add those to the module.
+You can always create your own factory by extending `getFactory<T>` and add those to the module.
 
 ```dart
  addFactory(MyTooltipService, MyCustomFactory());
@@ -112,9 +112,9 @@ You can always create your own factory by extending `InjectFactory<T>` and add t
 
 __Note:__
 There are some other Factories already provided to be used - like:
-- `InjectTagFactory` for create method with a Tag
-- `TaggedSingletonInjectFactory` - for tagged singletons with `Closeable` interface
-- `SingleInjectFactory` - single inject factory with `Closable` interface
+- `getTagFactory` for create method with a Tag
+- `TaggedSingletongetFactory` - for tagged singletons with `Closeable` interface
+- `SinglegetFactory` - single get factory with `Closable` interface
 
 ### Add modules to the scope (global too)
 

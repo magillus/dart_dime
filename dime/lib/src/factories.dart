@@ -70,8 +70,8 @@ abstract class BaseDimeModule with Closable {
     }
   }
 
-  /// Injects the created value from the module
-  T inject<T>({String tag}) {
+  /// Gets the created value from the module
+  T get<T>({String tag}) {
     var name = T.toString();
     var injectFactory = injectMap[T];
 
@@ -94,7 +94,15 @@ abstract class BaseDimeModule with Closable {
       return null;
     }
   }
+  /// Injects the created value from the module
+  /// [Deprecated] - use [get]
+  @deprecated
+  T inject<T>({String tag}) {
+    return get(tag: tag);
+  }
 
+
+  /// Closes the module and all its [InjectFactory].
   @override
   void close() {
     _injectMap.forEach((type, factory) {

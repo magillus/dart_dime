@@ -82,23 +82,47 @@ class DimeScopeTests {
       });
 
       test('test multiple scopes levels injects', () {
-        expect(Dime.inject<CA>().runtimeType, CA);
-        expect(Dime.inject<AA>().runtimeType, AA);
-        expect(Dime.inject<CC>().runtimeType, CC);
+        expect(Dime
+            .get<CA>()
+            .runtimeType, CA);
+        expect(Dime
+            .get<AA>()
+            .runtimeType, AA);
+        expect(Dime
+            .get<CC>()
+            .runtimeType, CC);
         // ignore: unnecessary_lambdas
-        expectException(() => Dime.inject<AB>(), DimeException);
+        expectException(() => Dime.get<AB>(), DimeException);
 
-        expect(scope2.inject<CA>().runtimeType, CA);
-        expect(scope1.inject<CA>().runtimeType, CA);
-        expect(scope1.inject<AA>().runtimeType, AA);
-        expectException(() => scope2.inject<BC>(), DimeException);
-        expect(scope2.inject<AB>().runtimeType, AB);
+        expect(scope2
+            .get<CA>()
+            .runtimeType, CA);
+        expect(scope1
+            .get<CA>()
+            .runtimeType, CA);
+        expect(scope1
+            .get<AA>()
+            .runtimeType, AA);
+        expectException(() => scope2.get<BC>(), DimeException);
+        expect(scope2
+            .get<AB>()
+            .runtimeType, AB);
 
-        expect(scope21.inject<AA>().runtimeType, AA);
-        expect(scope21.inject<CC>().runtimeType, CC);
-        expect(scope22.inject<AC>().runtimeType, AC);
-        expect(scope22.inject<CB>().runtimeType, CB);
-        expect(scope21.inject<BB>().runtimeType, BB);
+        expect(scope21
+            .get<AA>()
+            .runtimeType, AA);
+        expect(scope21
+            .get<CC>()
+            .runtimeType, CC);
+        expect(scope22
+            .get<AC>()
+            .runtimeType, AC);
+        expect(scope22
+            .get<CB>()
+            .runtimeType, CB);
+        expect(scope21
+            .get<BB>()
+            .runtimeType, BB);
       });
     });
   }

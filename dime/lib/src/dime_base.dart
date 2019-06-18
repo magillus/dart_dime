@@ -1,10 +1,13 @@
+import 'dart:core' as prefix0;
+import 'dart:core';
+
 import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Main Dime Dependency Injection Framework utility class
-/// After installing a module we can access module's instances via [inject].
+/// After installing a module we can access module's instances via [get].
 ///
 class Dime {
   /// Global scope
@@ -12,20 +15,35 @@ class Dime {
 
   /// Fetches a value and returns it base on [T] type
   /// and instance identifier [tag].
+  static T getWithTag<T>(String tag) {
+    return get(tag: tag);
+  }
+
+  /// Fetches a value and returns it base on [T] type
+  /// and instance identifier [tag].
+  /// [Deprecated] - use [getWithTag] method.
+  @deprecated
   static T injectWithTag<T>(String tag) {
-    return inject(tag: tag);
+    return getWithTag(tag);
   }
 
   /// Fetches a value and returns based on [T] type
   /// and optional instance identifier [tag].
-  ///
-  static T inject<T>({String tag}) {
-    var instance = _rootScope._inject<T>(tag: tag);
+  static T get<T>({String tag}) {
+    var instance = _rootScope._get<T>(tag: tag);
     if (instance == null) {
       throw DimeException.factoryNotFound(type: T);
     } else {
       return instance;
     }
+  }
+
+  /// Fetches a value and returns based on [T] type
+  /// and optional instance identifier [tag].
+  /// [Deprecated] - use [get] method.
+  @deprecated
+  static T inject<T>({String tag}) {
+    return get(tag: tag);
   }
 
   /// Adds child scope to this scope.
@@ -183,34 +201,43 @@ class DimeScope extends Closable {
     _wasClosed = true;
   }
 
-  T _inject<T>({String tag}) {
+  T _get<T>({String tag}) {
     if (_wasClosed) {
       throw DimeException.scopeClosed(scope: this);
     }
     T value;
     // check modules
     for (var module in _modules) {
-      value = module.inject<T>(tag: tag);
+      value = module.get<T>(tag: tag);
       if (value != null) return value;
     }
     if (value == null) {
-      return _parent?.inject<T>(tag: tag);
+      return _parent?.get<T>(tag: tag);
     }
     return null;
   }
 
   /// Fetches a value from a module or child scopes to satisfy [T]
   /// and optional [tag]
-  T inject<T>({String tag}) {
+
+  T get<T>({String tag}) {
     if (_wasClosed) {
       throw DimeException.scopeClosed(scope: this);
     }
-    var instance = _inject<T>(tag: tag);
+    var instance = _get<T>(tag: tag);
     if (instance == null) {
       throw DimeException.factoryNotFound(type: T);
     } else {
       return instance;
     }
+  }
+
+  /// Fetches a value from a module or child scopes to satisfy [T]
+  /// and optional [tag]
+  /// [Deprecated] use [get] method
+  @deprecated
+  T inject<T>({String tag}) {
+    return get(tag: tag);
   }
 
   /// Opens new scope by [name] and adds as child to this scope

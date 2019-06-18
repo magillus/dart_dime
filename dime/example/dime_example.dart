@@ -14,34 +14,34 @@ void main() {
   Dime.addScope(scope);
 
   // ignore: omit_local_variable_types
-  MyTitleService titleService = Dime.inject();
+  MyTitleService titleService = Dime.get();
   print(titleService.text());
 
   // ignore: omit_local_variable_types
-  MyTitleService titleService2 = Dime.inject(tag: "Test tag");
+  MyTitleService titleService2 = Dime.get(tag: "Test tag");
   print(titleService2.text());
 
-  var creatorService = Dime.inject<TextService>();
+  var creatorService = Dime.get<TextService>();
   print(creatorService.text());
 
-  creatorService = Dime.inject<TextService>(tag: "TEST TAG A");
+  creatorService = Dime.get<TextService>(tag: "TEST TAG A");
   print(creatorService.text());
 
-  var scopeTitle = Dime.inject<MyTitleService>();
+  var scopeTitle = Dime.get<MyTitleService>();
   print(scopeTitle.text());
 
-  scopeTitle = scope.inject<MyTitleService>();
+  scopeTitle = scope.get<MyTitleService>();
   print(scopeTitle.text());
 
-  var tooltip = Dime.inject<MyTooltipService>();
+  var tooltip = Dime.get<MyTooltipService>();
   print(tooltip.text());
 
-  var scopeDescription = scope.inject<MyDescriptionService>();
+  var scopeDescription = scope.get<MyDescriptionService>();
   print(scopeDescription.text());
 
   Dime.closeScope(scope: scope);
 
-  scopeDescription = scope.inject<MyDescriptionService>();
+  scopeDescription = scope.get<MyDescriptionService>();
   print(scopeDescription.text());
 }
 

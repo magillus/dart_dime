@@ -75,7 +75,7 @@ abstract class TextService {
 }
 
 class DetailsService {
-  TextService title = Dime.inject<MyTitleService>();
-  TextService description = Dime.inject<MyDescriptionService>();
-  TextService tooltip = Dime.inject<MyTooltipService>();
+  TextService title = Dime.get<MyTitleService>();
+  TextService description = Dime.get<MyDescriptionService>();
+  TextService tooltip = Dime.get<MyTooltipService>();
 }
