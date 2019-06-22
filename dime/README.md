@@ -38,7 +38,7 @@ void main() {
 ```yaml
  depedency: 
    ...
-   dime: ^0.3.0-rc
+   dime: ^0.3.0
    ...
 ```
 

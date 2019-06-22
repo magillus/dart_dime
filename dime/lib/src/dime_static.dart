@@ -75,6 +75,9 @@ class Dime {
 
 final DimeScope _rootScope = DimeScope("root");
 
+/// Returns Dime root scope - top level scope for the Isolate.
+DimeScope get dimeRootScope => _rootScope;
+
 /// Fetches a value and returns it base on [T] type
 /// and instance identifier [tag].
 T dimeGetWithTag<T>(String tag) {

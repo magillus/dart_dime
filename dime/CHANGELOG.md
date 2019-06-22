@@ -1,10 +1,11 @@
-## 0.3.0-rc - Dime static change
+## 0.3.0 - Dime static change
 
 - refactored to use static methods as `dime*` not `Dime.` static class
 - `Dime.` still available via deprecated API notation
 - changed name from `inject` to `get` to better match name to function of the method
 - `inject` still available via deprecated API notation
 - Code styles updates based on effective-dart lint rules.
+- Adding global scope property - to be used with Dime Flutter package (in development)
 
 ## 0.2.0 - Bug fix
 
