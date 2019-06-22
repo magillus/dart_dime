@@ -1,73 +1,9 @@
+import 'dart:core' as prefix0;
+import 'dart:core';
+
 import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
-
-// ignore: avoid_classes_with_only_static_members
-/// Main Dime Dependency Injection Framework utility class
-/// After installing a module we can access module's instances via [inject].
-///
-class Dime {
-  /// Global scope
-  static final DimeScope _rootScope = DimeScope("root");
-
-  /// Fetches a value and returns it base on [T] type
-  /// and instance identifier [tag].
-  static T injectWithTag<T>(String tag) {
-    return inject(tag: tag);
-  }
-
-  /// Fetches a value and returns based on [T] type
-  /// and optional instance identifier [tag].
-  ///
-  static T inject<T>({String tag}) {
-    var instance = _rootScope._inject<T>(tag: tag);
-    if (instance == null) {
-      throw DimeException.factoryNotFound(type: T);
-    } else {
-      return instance;
-    }
-  }
-
-  /// Adds child scope to this scope.
-  static void addScope(DimeScope scope) {
-    _rootScope.addScope(scope);
-  }
-
-  /// Opens a scope by name,
-  /// will return the created scope.
-  static DimeScope openScope(String name) {
-    var scope = DimeScope(name);
-    addScope(scope);
-    return scope;
-  }
-
-  /// Closes scope by name or scope
-  static void closeScope({String name, DimeScope scope}) {
-    if (name != null) {
-      _rootScope.closeScope(name: name);
-    } else if (scope != null) {
-      _rootScope.closeScope(scope: scope);
-    }
-  }
-
-  /// Clears all modules
-  static void clearAll() {
-    _rootScope._modules.forEach(Closable.closeWith);
-    _rootScope._modules.clear();
-  }
-
-  /// Uninstalls module with closing any [Closable] instances in the module
-  static void uninstallModule(BaseDimeModule module) {
-    _rootScope._modules.remove(module);
-  }
-
-  /// Installs [module] in the Dime root scope.
-  /// [override] if set True it will override any currently inject
-  /// factory for the type/tag
-  static void installModule(BaseDimeModule module, {bool override = false}) {
-    _rootScope.installModule(module, override: override);
-  }
-}
 
 /**
  * note to myself:
@@ -108,8 +44,8 @@ class DimeScope extends Closable {
     module.updateInjections();
     if (override) {
       // override this scope values
-      module.injectMap.keys.forEach((newModuleType) {
-        _modules.forEach((currentModule) {
+      for (var newModuleType in module.injectMap.keys) {
+        for (var currentModule in _modules) {
           if (currentModule != module &&
               currentModule.injectMap.containsKey(newModuleType)) {
             Fimber.i(
@@ -119,12 +55,12 @@ class DimeScope extends Closable {
             Closable.closeWith(currentModule.injectMap[newModuleType]);
             currentModule.injectMap.remove(newModuleType);
           }
-        });
-      });
+        }
+      }
     } else {
       // detect duplicate for the type
-      module.injectMap.keys.forEach((newModuleType) {
-        _modules.forEach((currentModule) {
+      for (var newModuleType in module.injectMap.keys) {
+        for (var currentModule in _modules) {
           if (currentModule != module &&
               currentModule.injectMap.containsKey(newModuleType)) {
             // todo Do we need resolve duplicates per tag?
@@ -132,8 +68,8 @@ class DimeScope extends Closable {
             throw DimeException.message("Found duplicate type: $newModuleType "
                 "inside current scope modules.");
           }
-        });
-      });
+        }
+      }
     }
   }
 
@@ -179,38 +115,55 @@ class DimeScope extends Closable {
     for (var module in _modules) {
       module.close();
     }
-    _scopes.forEach((scope) => scope.close());
+    _modules.clear();
+    for (var scope in _scopes) {
+      scope.close();
+    }
+    _scopes.clear();
     _wasClosed = true;
   }
 
-  T _inject<T>({String tag}) {
-    if (_wasClosed) {
-      throw DimeException.scopeClosed(scope: this);
-    }
+  /// Resets scops.
+  void reset() {
+    close();
+    _wasClosed = false;
+  }
+
+  T _get<T>({String tag}) {
     T value;
     // check modules
     for (var module in _modules) {
-      value = module.inject<T>(tag: tag);
+      value = module.get<T>(tag: tag);
       if (value != null) return value;
     }
     if (value == null) {
-      return _parent?.inject<T>(tag: tag);
+      // try parent scope if exists
+      return _parent?.get<T>(tag: tag);
     }
     return null;
   }
 
   /// Fetches a value from a module or child scopes to satisfy [T]
   /// and optional [tag]
-  T inject<T>({String tag}) {
+
+  T get<T>({String tag}) {
     if (_wasClosed) {
       throw DimeException.scopeClosed(scope: this);
     }
-    var instance = _inject<T>(tag: tag);
+    var instance = _get<T>(tag: tag);
     if (instance == null) {
       throw DimeException.factoryNotFound(type: T);
     } else {
       return instance;
     }
+  }
+
+  /// Fetches a value from a module or child scopes to satisfy [T]
+  /// and optional [tag]
+  /// [Deprecated] use [get] method
+  @deprecated
+  T inject<T>({String tag}) {
+    return get(tag: tag);
   }
 
   /// Opens new scope by [name] and adds as child to this scope

@@ -7,41 +7,40 @@ import '../test/common.dart';
 void main() {
   Fimber.plantTree(DebugTree.elapsed());
   Fimber.i("Started app");
-  Dime.installModule(ServiceModule());
+  dimeInstall(ServiceModule());
   Fimber.i("Installed module");
-  var scope = DimeScope("test");
+  var scope = dimeOpenScope("test");
   scope.installModule(ScopeModule());
-  Dime.addScope(scope);
 
   // ignore: omit_local_variable_types
-  MyTitleService titleService = Dime.inject();
+  MyTitleService titleService = dimeGet();
   print(titleService.text());
 
   // ignore: omit_local_variable_types
-  MyTitleService titleService2 = Dime.inject(tag: "Test tag");
+  MyTitleService titleService2 = dimeGetWithTag("Test tag");
   print(titleService2.text());
 
-  var creatorService = Dime.inject<TextService>();
+  var creatorService = dimeGet<TextService>();
   print(creatorService.text());
 
-  creatorService = Dime.inject<TextService>(tag: "TEST TAG A");
+  creatorService = dimeGet<TextService>(tag: "TEST TAG A");
   print(creatorService.text());
 
-  var scopeTitle = Dime.inject<MyTitleService>();
+  var scopeTitle = dimeGet<MyTitleService>();
   print(scopeTitle.text());
 
-  scopeTitle = scope.inject<MyTitleService>();
+  scopeTitle = dimeGet<MyTitleService>();
   print(scopeTitle.text());
 
-  var tooltip = Dime.inject<MyTooltipService>();
+  var tooltip = dimeGet<MyTooltipService>();
   print(tooltip.text());
 
-  var scopeDescription = scope.inject<MyDescriptionService>();
+  var scopeDescription = scope.get<MyDescriptionService>();
   print(scopeDescription.text());
 
-  Dime.closeScope(scope: scope);
+  dimeCloseScope(scope: scope);
 
-  scopeDescription = scope.inject<MyDescriptionService>();
+  scopeDescription = scope.get<MyDescriptionService>();
   print(scopeDescription.text());
 }
 
