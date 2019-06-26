@@ -24,18 +24,28 @@ class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
   DimeScope scope;
 
   @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+    return "ScopeFlutterState(${scope?.name ?? "none"}";
+  }
+  @override
   void initState() {
     super.initState();
-    scope = dimeOpenScope(widget.scopeName);
-    for (var module in widget.modules) {
-      scope.installModule(module);
-    }
   }
 
   @override
   void dispose() {
     dimeCloseScope(scope: scope);
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var parentScope = DimeFlutter.scopeOf(context);
+    scope = DimeScope(widget.scopeName, parent: parentScope);
+    for (var module in widget.modules) {
+      scope.installModule(module);
+    }
   }
 
   @override

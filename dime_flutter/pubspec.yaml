@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   dime: ^0.3.0
+  fimber: ^0.1.11
 
 dev_dependencies:
   flutter_test:
