@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 
 typedef Runner = void Function();
 
+/// Expects exception of the [type] when running a function [runner]
 void expectException(Runner runner, Type type) {
   dynamic thrownException;
   try {
@@ -16,6 +17,7 @@ void expectException(Runner runner, Type type) {
       reason: "Expecting Exception of type: $type");
 }
 
+/// Sample Description service that implements [TextService]
 class MyDescriptionService extends TextService {
   String description;
 
@@ -32,6 +34,7 @@ class MyDescriptionService extends TextService {
   }
 }
 
+/// Sample Service that implements [TextService]
 class MyTooltipService extends TextService {
   String tooltip;
 
@@ -50,6 +53,7 @@ class MyTooltipService extends TextService {
   }
 }
 
+/// Sample Title service that implements [TextService]
 class MyTitleService extends TextService {
   String title;
 

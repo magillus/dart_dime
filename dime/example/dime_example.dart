@@ -40,8 +40,13 @@ void main() {
 
   dimeCloseScope(scope: scope);
 
-  scopeDescription = scope.get<MyDescriptionService>();
-  print(scopeDescription.text());
+  try {
+    scopeDescription = scope.get<MyDescriptionService>();
+    print(scopeDescription.text());
+  } on DimeException catch (e, t) {
+    // expected thrown exception
+    print("Expected exception: $e,\n$t");
+  }
 }
 
 class ScopeModule extends BaseDimeModule {

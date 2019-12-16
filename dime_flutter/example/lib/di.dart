@@ -14,7 +14,6 @@ class DescriptionService extends TextService {
   String get path => "/home/description";
 
   @override
-  // TODO: implement text
   String get text => "Test description text\nfor this instance.";
 }
 
@@ -40,9 +39,10 @@ abstract class TextService {
   String get text;
 }
 
-class RedUiModule extends BaseDimeModule {
+class RedUiModule extends UiModule {
   @override
   void updateInjections() {
+    super.updateInjections();
     addSingle<ThemeGenerator>(RedThemeGenerator());
   }
 }
