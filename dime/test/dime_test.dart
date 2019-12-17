@@ -7,6 +7,7 @@ import 'scope_test.dart';
 
 void main() {
   Fimber.plantTree(DebugTree());
+
   group('Dime inject', () {
     setUp(() {
       dimeReset();

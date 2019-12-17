@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.1.0 <3.0.0'
 
 dependencies:
-  fimber: ^0.1.11 # temporary -todo remove from final in RC
+  fimber: ^0.3.0 # temporary -todo remove from final in RC
 
 dev_dependencies:
   pedantic: ^1.0.0
