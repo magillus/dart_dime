@@ -76,9 +76,10 @@ class DimeFlutter extends InheritedWidget {
 
   /// Provides DimeScope that was last defined in the Widget tree.
   static DimeScope scopeOf(BuildContext context) {
-    var dimeFlutter = (context.inheritFromWidgetOfExactType(DimeFlutter));
+    var dimeFlutter =
+        (context.dependOnInheritedWidgetOfExactType<DimeFlutter>());
     if (dimeFlutter != null) {
-      return (dimeFlutter as DimeFlutter).scope;
+      return dimeFlutter.scope;
     } else {
       Fimber.i("No scope - will return root scope.");
       return dimeRootScope;

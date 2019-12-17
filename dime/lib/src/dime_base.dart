@@ -37,7 +37,7 @@ class DimeScope extends Closable {
   }
 
   /// Installs a [module] into this scope.
-  /// Optinal [override] allows to update current's scope instances
+  /// Optional [override] allows to update current's scope instances
   /// if same are defined in a [module]
   void installModule(BaseDimeModule module, {bool override = false}) {
     _modules.add(module);

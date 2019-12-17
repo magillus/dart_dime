@@ -1,4 +1,4 @@
-Dime is Dart Dependency injection framework.
+Dime is Dart Dependency "injection framework", it is more like factory and static lookup but with nice wrap.
 
 Dime allows to create modules that define injection types and their InjectFactory implementations.
 It can easily base on interfaces which allows to pick different implementations. 
@@ -56,7 +56,7 @@ class MyModule  extends BaseAppgetorModule {
 
 ```
 
-Below are examples that can be used inside `updategetions` method.
+Below are examples that can be used inside `updateinjections` method.
 
 #### Singleton per type
 
@@ -71,7 +71,7 @@ get singleton value by implementing interface:
   addSingle<TitleService>(MyTitleService());
 ```
 
-#### Singleton per type with tag
+#### Singletons per type with tag
 
 get single value by its class type:
 
@@ -85,9 +85,9 @@ get singleton value by implementing interface:
   addSingle<TitleService>(MyTitleService(), tag: "home-title");
 ```
 
-#### Creator on-demand getion, it uses type of Creator
+#### Creator on-demand injection, it uses type of Creator
 
-This is creator - which will create an object at time of getion.
+This is creator - which will create an object at time of injection.
 ```dart
 typedef Creator<T> = T Function(String tag);
 ```
@@ -98,7 +98,7 @@ The Creator provides optional `String tag` that may be used to create the tagged
 addCreator<TextService>((tag) =>
         MyTitleService(title: "Test title: $tag: now: ${DateTime.now()}"));
 ```
-#### Creator on-demand getion with singleton storage - delayed singleton.
+#### Creator on-demand injection with singleton storage - delayed singleton.
 
 Similar to above example with `addCreator`, however created instance will be cached per tag.
 
@@ -130,7 +130,6 @@ When a scope closes all modules in that scope will also close (clean up) by call
 ```dart
   dimeInstall(ServiceModule());
 ```
-
 
 ## Features and bugs
 
