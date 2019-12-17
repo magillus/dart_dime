@@ -1,3 +1,8 @@
+## 0.3.1 - Dime scopes updates
+
+- added scopes usages
+- minor updates for dependency
+
 ## 0.3.0 - Dime static change
 
 - refactored to use static methods as `dime*` not `Dime.` static class
