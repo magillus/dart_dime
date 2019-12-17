@@ -78,7 +78,7 @@ abstract class BaseDimeModule with Closable {
     if (injectFactory != null && injectFactory is InjectTagFactory) {
       // use default tag for TaggedInjectFactory
       var instance =
-      injectFactory.createTagged(tag ?? InjectTagFactory.defaultTag);
+          injectFactory.createTagged(tag ?? InjectTagFactory.defaultTag);
       Fimber.d("Injecting: $name for tag $tag with $instance");
       return instance;
     } else if (injectFactory != null && injectFactory is InjectFactory) {
@@ -94,13 +94,13 @@ abstract class BaseDimeModule with Closable {
       return null;
     }
   }
+
   /// Injects the created value from the module
   /// [Deprecated] - use [get]
   @deprecated
   T inject<T>({String tag}) {
     return get(tag: tag);
   }
-
 
   /// Closes the module and all its [InjectFactory].
   @override
