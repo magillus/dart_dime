@@ -27,6 +27,7 @@ class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
     return "ScopeFlutterState(${scope?.name ?? "none"}";
   }
+
   @override
   void initState() {
     super.initState();

@@ -1,4 +1,6 @@
-## 0.3.1 - Dime for Flutter
+## 0.3.1 - Publish errors fixes
+
+## 0.3.2 - Dime for Flutter
  
 - Inherit widget for Dime Scope
 - `DimeScopeFlutter` Widget to wrap children with a scope

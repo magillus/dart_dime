@@ -56,31 +56,31 @@ Test class to be referenced by main [scope_test.dart](https://github.com/magillu
 
 #### Example injections:
 
-scope2.inject<CA> -> from scope2.ModuleC.CA
+scope2.inject\<CA> - from scope2.ModuleC.CA
 
-Dime.inject<CA> -> from dime.ModuleC.CA
+Dime.inject\<CA> - from dime.ModuleC.CA
 
-scope1.inject<CA> -> from dime.ModuleC.CA
+scope1.inject\<CA> - from dime.ModuleC.CA
 
-scope1.inject<AA> -> from scope1.ModuleA.AA
+scope1.inject\<AA> - from scope1.ModuleA.AA
 
-scope2.inject<BC> -> not found - can't access other scopes
+scope2.inject\<BC> - not found - can't access other scopes
 
-scope2.inject<AB> -> from scope2.ModuleA.AB
+scope2.inject\<AB> - from scope2.ModuleA.AB
 
-Dime.inject<AA>   -> dime.ModuleXX.AA
+Dime.inject\<AA>   - dime.ModuleXX.AA
 
-Dime.inject<AB>   -> not found - Dime can't drill to scopes
+Dime.inject\<AB>   - not found - Dime can't drill to scopes
 
-Dime.inject<CC>   -> dime.ModuleC.CC
+Dime.inject\<CC>   - dime.ModuleC.CC
 
-scope21.inject<AA> -> scope2.ModuleA.AA
+scope21.inject\<AA> - scope2.ModuleA.AA
 
-scope21.inject<CC> -> scope21.ModuleC.CC
+scope21.inject\<CC> - scope21.ModuleC.CC
 
-scope22.inject<AC> -> scope22.ModuleA.AC
+scope22.inject\<AC> - scope22.ModuleA.AC
 
-scope22.inject<CB> -> scope2.ModuleC.CB
+scope22.inject\<CB> - scope2.ModuleC.CB
 
-scope21.inject<BB> -> dime.ModuleX.BB
+scope21.inject\<BB> - dime.ModuleX.BB
 
