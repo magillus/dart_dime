@@ -1,3 +1,6 @@
+## 0.3.3 - Upgrade Fimber version
+- Upgrades Fimber version to not depend on `dart:io`
+
 ## 0.3.1 - Dime scopes updates
 
 - added scopes usages
