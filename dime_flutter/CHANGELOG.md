@@ -1,3 +1,5 @@
+## 0.3.4 - Fix for single by tag injection
+
 ## 0.3.3 - Update for Fimber 0.4
 
 ## 0.3.2 - Dime for Flutter

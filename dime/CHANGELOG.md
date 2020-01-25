@@ -1,3 +1,6 @@
+## 0.3.4 - Fix for Single by tag injection
+- Bug fix for single by tag module injection.
+
 ## 0.3.3 - Upgrade Fimber version
 - Upgrades Fimber version to not depend on `dart:io`
 
