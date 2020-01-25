@@ -47,6 +47,7 @@ abstract class BaseDimeModule with Closable {
         var instanceFactory = injectMap[T];
         if (instanceFactory == null) {
           instanceFactory = SingleByTagInstanceFactory<T>();
+          injectMap[T] = instanceFactory;
         }
         if (instanceFactory is SingleInjectFactory<T>) {
           // remove from single ad make it taggable factory
