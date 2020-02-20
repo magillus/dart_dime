@@ -80,6 +80,20 @@ class DimeScope extends Closable {
     module.close();
   }
 
+  /// Gets scope if created in this scope.
+  /// Will scan child scopes for the same ScopeName.
+  DimeScope getScope(String scopeName) {
+    var scope = _scopes.firstWhere((scope) => scope.name == scopeName,
+        orElse: () => null);
+    if (scope == null) {
+      scope = _scopes
+          .firstWhere((scope) => scope.getScope(scopeName) != null,
+              orElse: () => null)
+          ?.getScope(scopeName);
+    }
+    return scope;
+  }
+
   /// Adds [childScope] to this scope.
   void addScope(DimeScope childScope) {
     _scopes.add(childScope);
