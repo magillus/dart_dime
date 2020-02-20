@@ -1,3 +1,7 @@
+## 0.3.5 - Scopes updates
+- `dimeOpenScope` will check if scope was created and return it. 
+- Scope `getScope` method added to fetch child scope by name.
+
 ## 0.3.4 - Fix for Single by tag injection
 - Bug fix for single by tag module injection.
 
