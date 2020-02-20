@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:dime/src/common.dart';
 import 'package:dime/src/dime_base.dart';
 import 'package:dime/src/factories.dart';
+import 'package:fimber/fimber.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Main Dime Dependency Injection Framework utility class
@@ -100,9 +101,21 @@ void dimeAddScope(DimeScope scope) {
   _rootScope.addScope(scope);
 }
 
+/// Gets the scope from root Scope by name.
+/// Will return null if no scope found.
+DimeScope dimeGetScope(String name) {
+  return _rootScope.getScope(name);
+}
+
 /// Opens a scope by name,
-/// will return the created scope.
+/// will return scope if was already created under that name
+/// will return the created scope
 DimeScope dimeOpenScope(String name) {
+  var currentScope = dimeGetScope(name);
+  if (currentScope != null) {
+    Fimber.w("Scope $name was already created.");
+    return currentScope;
+  }
   var scope = DimeScope(name);
   dimeAddScope(scope);
   return scope;
