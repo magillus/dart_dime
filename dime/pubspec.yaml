@@ -1,6 +1,6 @@
 name: dime
 description: Dime is Dependency getion for Dart, allows to define modules with signle/creator inejction factories, allows String tagging and simple Scope tree.
-version: 0.3.4
+version: 0.3.5
 homepage: https://github.com/magillus/dart_dime
 
 environment:

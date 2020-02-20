@@ -80,6 +80,14 @@ class DimeScopeTests {
         scope22.installModule(ModuleB());
       });
 
+      test('test same scope by name',() {
+        var sa = dimeOpenScope('my-test');
+        sa.installModule(ModuleA());
+        var sb = dimeOpenScope('my-test');
+        sb.installModule(ModuleB());
+        expect(sa, sb);
+      });
+
       test('test multiple scopes levels injects', () {
         expect(dimeGet<CA>().runtimeType, CA);
         expect(dimeGet<AA>().runtimeType, AA);
