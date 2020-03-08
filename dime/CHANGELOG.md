@@ -1,3 +1,6 @@
+## 0.4.0 - Small async fetch
+- added method `dimeGetAsync` which wraps type of Future casting.
+
 ## 0.3.5 - Scopes updates
 - `dimeOpenScope` will check if scope was created and return it. 
 - Scope `getScope` method added to fetch child scope by name.

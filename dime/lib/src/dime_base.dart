@@ -5,6 +5,8 @@ import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
 
+import 'dime_module.dart';
+
 /**
  * note to myself:
  *

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dime/dime.dart';
+import 'package:dime/src/dime_module.dart';
 import 'package:fimber/fimber.dart';
 import 'package:test/test.dart';
 
@@ -84,6 +87,18 @@ void main() {
       dimeInstall(SinglesModule());
     });
 
+    test('inject with Future', () async {
+      var textFuture = await dimeGetAsync<My2TitleService>();
+      My2TitleService service;
+      service = await dimeGetAsync();
+      assert(service != null);
+      assert(textFuture != null);
+      assert(textFuture is My2TitleService);
+
+      expect(service.text(), 'Test Future Service');
+      expect(textFuture.text(), 'Test Future Service');
+    });
+
     test('inject with tag', () {
       var titleService = dimeGetWithTag<MyTitleService>("Test tag");
       assert(titleService != null);
@@ -152,6 +167,11 @@ class SinglesModuleCopy extends BaseDimeModule {
 class SinglesModule extends BaseDimeModule {
   @override
   void updateInjections() {
+    addSingleByCreator((tag) async {
+      return Future.delayed(Duration(seconds: 2), () {
+        return My2TitleService();
+      });
+    });
     addSingle(MyTitleService());
     addSingle(MyTitleService(title: "second title"), tag: "Test tag");
     addSingle(MyTooltipService(tooltip: "test tooltip"));

@@ -41,5 +41,8 @@ abstract class Closable {
     if (possibleClosable != null && possibleClosable is Closable) {
       possibleClosable.close();
     }
+    if (possibleClosable is Future<Closable>) {
+      possibleClosable.then((value) => value.close());
+    }
   }
 }

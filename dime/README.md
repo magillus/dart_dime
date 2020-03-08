@@ -38,7 +38,7 @@ void main() {
 ```yaml
  depedency: 
    ...
-   dime: ^0.3.5
+   dime: ^0.4.0
    ...
 ```
 
@@ -98,6 +98,32 @@ The Creator provides optional `String tag` that may be used to create the tagged
 addCreator<TextService>((tag) =>
         MyTitleService(title: "Test title: $tag: now: ${DateTime.now()}"));
 ```
+
+#### Async Creator on-demand injection with Future<T> value
+
+We can make the Creator function to return Future<T>:
+```dart
+addSingleByCreator((tag) async {
+      return Future.delayed(Duration(seconds: 2), () {
+        return My2TitleService();
+      });
+    });
+```
+With this setup we can use new method to fetch Future of the value:
+```dart
+var value = await dimeGetAsync<My2TitleService>();
+// or
+My2TitleService service;
+/// (some code)
+service = await dimeGetAsync();
+```
+or old style which was always supported
+```dart
+var value =await  dimeGet<Future<My2TitleService>>();
+```
+
+The `dimeGetAsync` helps to cast to known type without defining type in `< >`
+
 #### Creator on-demand injection with singleton storage - delayed singleton.
 
 Similar to above example with `addCreator`, however created instance will be cached per tag.

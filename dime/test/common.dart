@@ -53,6 +53,20 @@ class MyTooltipService extends TextService {
   }
 }
 
+/// Sample TextServiced used in Future DI test
+class My2TitleService extends TextService {
+  @override
+  int someNumber() {
+    return 2;
+  }
+
+  @override
+  String text() {
+    return 'Test Future Service';
+  }
+
+}
+
 /// Sample Title service that implements [TextService]
 class MyTitleService extends TextService {
   String title;

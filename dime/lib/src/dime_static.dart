@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:core' as prefix0;
 import 'dart:core';
 
-import 'package:dime/src/common.dart';
-import 'package:dime/src/dime_base.dart';
-import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
+
+import 'common.dart';
+import 'dime_base.dart';
+import 'dime_module.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Main Dime Dependency Injection Framework utility class
@@ -89,6 +91,17 @@ T dimeGetWithTag<T>(String tag) {
 /// and optional instance identifier [tag].
 T dimeGet<T>({String tag}) {
   var instance = _rootScope.get<T>(tag: tag);
+  if (instance == null) {
+    throw DimeException.factoryNotFound(type: T);
+  } else {
+    return instance;
+  }
+}
+
+/// Fetches a Future of the type [T]
+/// with optional tag identifier [tag].
+FutureOr<T> dimeGetAsync<T>({String tag}) async {
+  var instance = _rootScope.get<Future<T>>(tag:tag);
   if (instance == null) {
     throw DimeException.factoryNotFound(type: T);
   } else {
