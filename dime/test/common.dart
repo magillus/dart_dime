@@ -39,7 +39,7 @@ class MyTooltipService extends TextService {
   String tooltip;
 
   MyTooltipService({this.tooltip = "empty tooltip"}) {
-    Fimber.i("Creatig instance of Tooltip Service: $tooltip");
+    dimeLogger?.i("Creatig instance of Tooltip Service: $tooltip");
   }
 
   @override
@@ -64,7 +64,6 @@ class My2TitleService extends TextService {
   String text() {
     return 'Test Future Service';
   }
-
 }
 
 /// Sample Title service that implements [TextService]
@@ -72,7 +71,7 @@ class MyTitleService extends TextService {
   String title;
 
   MyTitleService({this.title = "My text title"}) {
-    Fimber.i("Creating instance of MyTitleService: $title");
+    dimeLogger?.i("Creating instance of MyTitleService: $title");
   }
 
   @override

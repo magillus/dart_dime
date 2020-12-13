@@ -1,12 +1,18 @@
 import 'dart:core' as prefix0;
 import 'dart:core';
 
+import 'package:dime/dime.dart';
 import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
 
 import 'dime_module.dart';
 
+FimberLog? dimeLogger;
+
+void initializeDimeLogger() {
+  dimeLogger = FimberLog("DIME");
+}
 /**
  * note to myself:
  *
@@ -25,7 +31,7 @@ class DimeScope extends Closable {
   final _scopeModule = _DimeScopeModule();
 
   final List<DimeScope> _scopes = [];
-  DimeScope _parent;
+  DimeScope? _parent;
 
   /// Name of the scope
   String name;
@@ -33,7 +39,7 @@ class DimeScope extends Closable {
   final List<BaseDimeModule> _modules = [];
 
   /// Creates instance of the scope with [name] and optional [parent] scope.
-  DimeScope(this.name, {DimeScope parent}) {
+  DimeScope(this.name, {DimeScope? parent}) {
     _parent = parent;
     installModule(_scopeModule);
   }
@@ -50,7 +56,7 @@ class DimeScope extends Closable {
         for (var currentModule in _modules) {
           if (currentModule != module &&
               currentModule.injectMap.containsKey(newModuleType)) {
-            Fimber.i(
+            dimeLogger?.i(
                 "Overriding $newModuleType in current module: $currentModule");
             // todo  Do we need to resolve duplicate per tag?
             // cleanup removed factory
@@ -84,12 +90,17 @@ class DimeScope extends Closable {
 
   /// Gets scope if created in this scope.
   /// Will scan child scopes for the same ScopeName.
-  DimeScope getScope(String scopeName) {
-    var scope = _scopes.firstWhere((scope) => scope.name == scopeName,
-        orElse: () => null);
+
+  DimeScope? getScope(String scopeName) {
+    var scope = _scopes
+        // ignore: unnecessary_cast
+        .map((e) => e as DimeScope?)
+        .firstWhere((scope) => scope?.name == scopeName, orElse: () => null);
     if (scope == null) {
       scope = _scopes
-          .firstWhere((scope) => scope.getScope(scopeName) != null,
+          // ignore: unnecessary_cast
+          .map((e) => e as DimeScope?)
+          .firstWhere((scope) => scope?.getScope(scopeName) != null,
               orElse: () => null)
           ?.getScope(scopeName);
     }
@@ -145,8 +156,8 @@ class DimeScope extends Closable {
     _wasClosed = false;
   }
 
-  T _get<T>({String tag}) {
-    T value;
+  T? _get<T>({String? tag}) {
+    T? value;
     // check modules
     for (var module in _modules) {
       value = module.get<T>(tag: tag);
@@ -162,7 +173,7 @@ class DimeScope extends Closable {
   /// Fetches a value from a module or child scopes to satisfy [T]
   /// and optional [tag]
 
-  T get<T>({String tag}) {
+  T? get<T>({String? tag}) {
     if (_wasClosed) {
       throw DimeException.scopeClosed(scope: this);
     }
@@ -178,7 +189,7 @@ class DimeScope extends Closable {
   /// and optional [tag]
   /// [Deprecated] use [get] method
   @deprecated
-  T inject<T>({String tag}) {
+  T? inject<T>({String? tag}) {
     return get(tag: tag);
   }
 
@@ -190,7 +201,7 @@ class DimeScope extends Closable {
   }
 
   /// Closes a child scope by [name] or [scope] instance.
-  void closeScope({String name, DimeScope scope}) {
+  void closeScope({String? name, DimeScope? scope}) {
     _scopes
         .where((ds) => ds.name == name || ds == scope)
         .toList()

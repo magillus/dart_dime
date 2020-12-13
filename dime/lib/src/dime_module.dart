@@ -1,7 +1,7 @@
-
 import 'package:fimber/fimber.dart';
 
 import 'common.dart';
+import 'dime_base.dart';
 import 'factories.dart';
 
 /// Base Dime module for providing types and [InjectFactory] for types.
@@ -38,7 +38,7 @@ abstract class BaseDimeModule with Closable {
   /// Will add instance to the module, if T is defined in <T> method call,
   /// it will find the instance faster.
   /// Otherwise it would find first instance that matches type check with T
-  void addSingle<T>(T instance, {String tag}) {
+  void addSingle<T>(T instance, {String? tag}) {
     if (instance is T) {
       if (tag == null) {
         if (injectMap.containsKey(T)) {
@@ -57,10 +57,10 @@ abstract class BaseDimeModule with Closable {
               (instanceFactory as SingleInjectFactory<T>);
           instanceFactory = SingleByTagInstanceFactory<T>();
           _injectMap[T] = instanceFactory;
-          if (oldSingleInjectFactory.localSingleton != null) {
-            (instanceFactory as SingleByTagInstanceFactory<T>).put(
-                InjectTagFactory.defaultTag,
-                oldSingleInjectFactory.localSingleton);
+          var factorySingleton = oldSingleInjectFactory.localSingleton;
+          if (factorySingleton != null) {
+            (instanceFactory as SingleByTagInstanceFactory<T>)
+                .put(InjectTagFactory.defaultTag, factorySingleton);
           }
           (instanceFactory as SingleByTagInstanceFactory<T>).put(tag, instance);
         }
@@ -74,7 +74,7 @@ abstract class BaseDimeModule with Closable {
   }
 
   /// Gets the created value from the module
-  T get<T>({String tag}) {
+  T? get<T>({String? tag}) {
     var name = T.toString();
     var injectFactory = injectMap[T];
 
@@ -82,7 +82,7 @@ abstract class BaseDimeModule with Closable {
       // use default tag for TaggedInjectFactory
       var instance =
           injectFactory.createTagged(tag ?? InjectTagFactory.defaultTag);
-      Fimber.d("Injecting: $name for tag $tag with $instance");
+      dimeLogger?.d("Injecting: $name for tag $tag with $instance");
       return instance;
     } else if (injectFactory != null && injectFactory is InjectFactory) {
       if (tag != null && tag != InjectTagFactory.defaultTag) {
@@ -90,19 +90,12 @@ abstract class BaseDimeModule with Closable {
         // because tagged instance was expected.
       } else {
         var instance = injectFactory.create();
-        Fimber.d("Injecting: $name with $instance");
+        dimeLogger?.d("Injecting: $name with $instance");
         return instance;
       }
     } else {
       return null;
     }
-  }
-
-  /// Injects the created value from the module
-  /// [Deprecated] - use [get]
-  @deprecated
-  T inject<T>({String tag}) {
-    return get(tag: tag);
   }
 
   /// Closes the module and all its [InjectFactory].

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:core' as prefix0;
 import 'dart:core';
 
-import 'package:fimber/fimber.dart';
+// import 'package:fimber/fimber.dart';
 
 import 'common.dart';
 import 'dime_base.dart';
@@ -30,7 +30,7 @@ class Dime {
 
   /// Fetches a value and returns based on [T] type
   /// and optional instance identifier [tag].
-  static T get<T>({String tag}) {
+  static T get<T>({String? tag}) {
     return dimeGet(tag: tag);
   }
 
@@ -38,7 +38,7 @@ class Dime {
   /// and optional instance identifier [tag].
   /// [Deprecated] - use [get] method.
   @deprecated
-  static T inject<T>({String tag}) {
+  static T inject<T>({String? tag}) {
     return dimeGet(tag: tag);
   }
 
@@ -54,7 +54,7 @@ class Dime {
   }
 
   /// Closes scope by name or scope
-  static void closeScope({String name, DimeScope scope}) {
+  static void closeScope({String? name, DimeScope? scope}) {
     dimeCloseScope(name: name, scope: scope);
   }
 
@@ -89,7 +89,7 @@ T dimeGetWithTag<T>(String tag) {
 
 /// Fetches a value and returns based on [T] type
 /// and optional instance identifier [tag].
-T dimeGet<T>({String tag}) {
+T dimeGet<T>({String? tag}) {
   var instance = _rootScope.get<T>(tag: tag);
   if (instance == null) {
     throw DimeException.factoryNotFound(type: T);
@@ -100,8 +100,8 @@ T dimeGet<T>({String tag}) {
 
 /// Fetches a Future of the type [T]
 /// with optional tag identifier [tag].
-FutureOr<T> dimeGetAsync<T>({String tag}) async {
-  var instance = _rootScope.get<Future<T>>(tag:tag);
+FutureOr<T> dimeGetAsync<T>({String? tag}) async {
+  var instance = _rootScope.get<Future<T>>(tag: tag);
   if (instance == null) {
     throw DimeException.factoryNotFound(type: T);
   } else {
@@ -116,7 +116,7 @@ void dimeAddScope(DimeScope scope) {
 
 /// Gets the scope from root Scope by name.
 /// Will return null if no scope found.
-DimeScope dimeGetScope(String name) {
+DimeScope? dimeGetScope(String name) {
   return _rootScope.getScope(name);
 }
 
@@ -126,7 +126,7 @@ DimeScope dimeGetScope(String name) {
 DimeScope dimeOpenScope(String name) {
   var currentScope = dimeGetScope(name);
   if (currentScope != null) {
-    Fimber.w("Scope $name was already created.");
+    dimeLogger?.w("Scope $name was already created.");
     return currentScope;
   }
   var scope = DimeScope(name);
@@ -135,7 +135,7 @@ DimeScope dimeOpenScope(String name) {
 }
 
 /// Closes scope by name or scope
-void dimeCloseScope({String name, DimeScope scope}) {
+void dimeCloseScope({String? name, DimeScope? scope}) {
   if (name != null) {
     _rootScope.closeScope(name: name);
   } else if (scope != null) {

@@ -1,3 +1,9 @@
+## 0.5.0-nullsafety.1 - Nullsafety added 
+
+- Removed deprecated method `inject` 
+- Added Nullsafety
+- Optional logger `FimberLog` named `dimeLogger` which allows to not see injection/creation and other dime logs.
+
 ## 0.4.0 - Small async fetch
 - added method `dimeGetAsync` which wraps type of Future casting.
 

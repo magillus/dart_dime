@@ -36,13 +36,13 @@ void main() {
   print(tooltip.text());
 
   var scopeDescription = scope.get<MyDescriptionService>();
-  print(scopeDescription.text());
+  print(scopeDescription?.text());
 
   dimeCloseScope(scope: scope);
 
   try {
     scopeDescription = scope.get<MyDescriptionService>();
-    print(scopeDescription.text());
+    print(scopeDescription?.text());
   } on DimeException catch (e, t) {
     // expected thrown exception
     print("Expected exception: $e,\n$t");

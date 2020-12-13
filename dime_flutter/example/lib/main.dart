@@ -27,7 +27,7 @@ class DimeApp extends StatelessWidget {
 }
 
 AppBar provideAppBar(BuildContext context) {
-  var title = DimeFlutter.get<TitleService>(context).text;
+  var title = DimeFlutter.get<TitleService>(context)!.text;
   // it is better to wrap it with Theme object
   return AppBar(
     title: Text(title),
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme =
-        DimeFlutter.get<ThemeGenerator>(context).updateTheme(Theme.of(context));
+        DimeFlutter.get<ThemeGenerator>(context)!.updateTheme(Theme.of(context));
     return Theme(
       data: theme,
       child: Scaffold(
@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
               RaisedButton(
                 child: Text("PAGE A"),
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context)!.push(
                       MaterialPageRoute(builder: (_) => TestAPageScope()));
                 },
               )
@@ -79,7 +79,7 @@ class TestAPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme =
-        DimeFlutter.get<ThemeGenerator>(context).updateTheme(Theme.of(context));
+        DimeFlutter.get<ThemeGenerator>(context)!.updateTheme(Theme.of(context));
     return Theme(
       data: theme,
       child: Scaffold(
