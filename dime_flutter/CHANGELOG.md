@@ -1,3 +1,5 @@
+## 0.5.0-nullsafety.1 - Added null safety
+
 ## 0.4.0 - Following `dime` versioning
 
 ## 0.3.5 - Following `dime` versioning
