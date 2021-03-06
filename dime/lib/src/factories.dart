@@ -1,11 +1,9 @@
 import 'package:dime/dime.dart';
 import 'package:dime/src/common.dart';
 
-
 /// Typed type to create a instance with a [tag] definition provided.
 /// This type is used in generative InjectFactory
 typedef Creator<T> = T Function(String tag);
-
 
 /// Singleton [InjectFactory] for a [T] type.
 /// It wil create an object using [Creator] method
@@ -61,7 +59,7 @@ class SingleByTagInstanceFactory<T> extends TaggedSingletonInjectFactory<T> {
   /// If instance of [T] exists in singleton map it will return it
   /// without creation of new.
   @override
-  T createForTag(String tag) {
+  T? createForTag(String? tag) {
     if (!taggedSingletons.containsKey(tag)) {
       return null;
     }
@@ -72,7 +70,7 @@ class SingleByTagInstanceFactory<T> extends TaggedSingletonInjectFactory<T> {
 /// Single instance factory where instance created is given at constructor.
 class SingleInstanceFactory<T> extends SingleInjectFactory<T> {
   /// Creates [InjectFactory] with single [instance] of [T] type.
-  SingleInstanceFactory(T instance):super(instance);
+  SingleInstanceFactory(T instance) : super(instance);
 
   /// Implementation of [createInstance] should never be called
   @override
@@ -84,11 +82,14 @@ class SingleInstanceFactory<T> extends SingleInjectFactory<T> {
 /// of the T object.
 abstract class SingleInjectFactory<T> extends InjectFactory<T> with Closable {
   T _localSingleton;
+
   /// Local singleton value created in this factory
   T get localSingleton => _localSingleton;
-  /// Creates instance of SingleInjectFactory 
+
+  /// Creates instance of SingleInjectFactory
   /// with preloaded instance as optional.
-  SingleInjectFactory([this._localSingleton]);
+  SingleInjectFactory(this._localSingleton);
+
   /// Creates instance.
   T createInstance();
 
@@ -103,7 +104,6 @@ abstract class SingleInjectFactory<T> extends InjectFactory<T> with Closable {
   @override
   void close() {
     Closable.closeWith(_localSingleton);
-    _localSingleton = null;
   }
 }
 
@@ -114,32 +114,39 @@ abstract class TaggedSingletonInjectFactory<T> extends InjectTagFactory<T>
   Map<String, T> taggedSingletons = {};
 
   /// Abstract method to create instance of [T] for a tag.
-  T createForTag(String tag);
+  T? createForTag(String tag);
 
   /// Method that checks if instance is already in singleton map
   /// before creating new instance of [T]
   @override
-  T createTagged(String tag) {
+  T? createTagged(String? tag) {
     if (tag == null) {
       return _handleDefault();
     }
     var localInstance = taggedSingletons[tag];
     if (localInstance == null) {
-      taggedSingletons[tag] = localInstance = createForTag(tag);
+      localInstance = createForTag(tag);
+      if (localInstance == null) {
+        taggedSingletons.remove(tag);
+      } else {
+        taggedSingletons[tag] = localInstance;
+      }
     }
     return localInstance;
   }
 
   @override
-  T create() {
+  T? create() {
     return createForTag(InjectTagFactory.defaultTag);
   }
 
-  T _handleDefault() {
+  T? _handleDefault() {
     var localInstance = taggedSingletons[InjectTagFactory.defaultTag];
     if (localInstance == null) {
       localInstance = create();
-      taggedSingletons[InjectTagFactory.defaultTag] = localInstance;
+      if (localInstance != null) {
+        taggedSingletons[InjectTagFactory.defaultTag] = localInstance;
+      }
     }
     return localInstance;
   }
@@ -161,12 +168,12 @@ abstract class InjectTagFactory<T> extends InjectFactory<T> {
   static const String defaultTag = "_NULL_TAG";
 
   /// Creates instance of [T] with provided tag value.
-  T createTagged(String tag);
+  T? createTagged(String tag);
 }
 
 /// InjectFactory abstract class that provides a instance from a [create] method
 // ignore: one_member_abstracts
 abstract class InjectFactory<T> {
   /// Creates a instance of [T]
-  T create();
+  T? create();
 }
