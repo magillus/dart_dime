@@ -47,7 +47,6 @@ void main() {
 
     test('inject on class MyTooltipService', () {
       var textService = dimeGet<MyTooltipService>();
-      assert(textService != null);
       assert(textService is MyTooltipService);
       expect(textService.text(), "test tooltip");
     });
@@ -91,17 +90,23 @@ void main() {
       var textFuture = await dimeGetAsync<My2TitleService>();
       My2TitleService service;
       service = await dimeGetAsync();
-      assert(service != null);
-      assert(textFuture != null);
       assert(textFuture is My2TitleService);
 
       expect(service.text(), 'Test Future Service');
       expect(textFuture.text(), 'Test Future Service');
     });
 
+    test('inject null', () async {
+      var textFuture = await dimeGet<MyTitleService>();
+      MyTitleService? service;
+      service = dimeGetOrNull<MyTitleService>(tag: 'empty');
+      assert(textFuture is MyTitleService);
+      expect(service, null);
+      expect(textFuture.text(), 'My text title');
+    });
+
     test('inject with tag', () {
       var titleService = dimeGetWithTag<MyTitleService>("Test tag");
-      assert(titleService != null);
       assert(titleService is MyTitleService);
       expect(titleService.text(), "second title");
     });

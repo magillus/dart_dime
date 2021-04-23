@@ -5,7 +5,6 @@ import 'package:dime/src/common.dart';
 import 'package:dime/src/factories.dart';
 import 'package:fimber/fimber.dart';
 import 'package:collection/collection.dart';
-
 import 'dime_module.dart';
 
 /**
@@ -173,6 +172,9 @@ class DimeScope extends Closable {
     }
   }
 
+  /// Gets a value for the class or returns null.
+  /// Optional [tag] can be used for getting right instance.
+  /// Can throw [DimeException] when scope was already closed.
   T? getOrNull<T>({String? tag}) {
     if (_wasClosed) {
       throw DimeException.scopeClosed(scope: this);

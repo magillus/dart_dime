@@ -1,3 +1,5 @@
+## 0.6.0 - Dime with nullsafety
+
 ## 0.4.0 - Following `dime` versioning
 
 ## 0.3.5 - Following `dime` versioning
