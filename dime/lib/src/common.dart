@@ -1,4 +1,4 @@
-import 'package:dime/src/dime_base.dart';
+import 'dime_base.dart';
 
 /// Dime Exception is special exception for Dime related errors.
 /// Easier to find DI errors to fix with in logs.
@@ -7,7 +7,7 @@ class DimeException implements Exception {
   String message;
 
   /// Creates instance of [DimeException] with optional [message]
-  DimeException({this.message});
+  DimeException({this.message = ""});
 
   /// Factory method to create message based [DimeException].
   factory DimeException.message(String message) =>
@@ -15,7 +15,7 @@ class DimeException implements Exception {
 
   /// Factory method to create scope closed dime exception.
   /// Optionally uou can provide [name] or [scope] for name in message.
-  factory DimeException.scopeClosed({String name, DimeScope scope}) =>
+  factory DimeException.scopeClosed({String? name, DimeScope? scope}) =>
       DimeException(
           message: "Dime Scope (${name ?? scope?.name ?? ""}) already closed.");
 

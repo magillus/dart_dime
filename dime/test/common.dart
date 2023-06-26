@@ -64,7 +64,6 @@ class My2TitleService extends TextService {
   String text() {
     return 'Test Future Service';
   }
-
 }
 
 /// Sample Title service that implements [TextService]

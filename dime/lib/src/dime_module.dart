@@ -1,4 +1,3 @@
-
 import 'package:fimber/fimber.dart';
 
 import 'common.dart';
@@ -38,43 +37,41 @@ abstract class BaseDimeModule with Closable {
   /// Will add instance to the module, if T is defined in <T> method call,
   /// it will find the instance faster.
   /// Otherwise it would find first instance that matches type check with T
-  void addSingle<T>(T instance, {String tag}) {
-    if (instance is T) {
-      if (tag == null) {
-        if (injectMap.containsKey(T)) {
-          Closable.closeWith(injectMap[T]);
-        }
-        injectMap[T] = SingleInstanceFactory<T>(instance);
-      } else {
-        var instanceFactory = injectMap[T];
-        if (instanceFactory == null) {
-          instanceFactory = SingleByTagInstanceFactory<T>();
-          injectMap[T] = instanceFactory;
-        }
-        if (instanceFactory is SingleInjectFactory<T>) {
-          // remove from single ad make it taggable factory
-          var oldSingleInjectFactory =
-              (instanceFactory as SingleInjectFactory<T>);
-          instanceFactory = SingleByTagInstanceFactory<T>();
-          _injectMap[T] = instanceFactory;
-          if (oldSingleInjectFactory.localSingleton != null) {
-            (instanceFactory as SingleByTagInstanceFactory<T>).put(
-                InjectTagFactory.defaultTag,
-                oldSingleInjectFactory.localSingleton);
-          }
-          (instanceFactory as SingleByTagInstanceFactory<T>).put(tag, instance);
-        }
-        if (instanceFactory is SingleByTagInstanceFactory<T>) {
-          instanceFactory.put(tag, instance);
-        }
+  void addSingle<T>(T instance, {String? tag}) {
+    if (tag == null) {
+      if (injectMap.containsKey(T)) {
+        Closable.closeWith(injectMap[T]);
       }
+      injectMap[T] = SingleInstanceFactory<T>(instance);
     } else {
-      throw DimeException.message("Instance provided does not match type.");
+      var instanceFactory = injectMap[T];
+      if (instanceFactory == null) {
+        instanceFactory = SingleByTagInstanceFactory<T>();
+        injectMap[T] = instanceFactory;
+      }
+      if (instanceFactory is SingleInjectFactory<T>) {
+        // remove from single ad make it taggable factory
+        var oldSingleInjectFactory =
+            (instanceFactory as SingleInjectFactory<T>);
+        instanceFactory = SingleByTagInstanceFactory<T>();
+        _injectMap[T] = instanceFactory;
+        if (oldSingleInjectFactory.localSingleton != null) {
+          final localSingleton = oldSingleInjectFactory.localSingleton;
+          if (localSingleton != null) {
+            (instanceFactory as SingleByTagInstanceFactory<T>)
+                .put(InjectTagFactory.defaultTag, localSingleton);
+          }
+        }
+        (instanceFactory as SingleByTagInstanceFactory<T>).put(tag, instance);
+      }
+      if (instanceFactory is SingleByTagInstanceFactory<T>) {
+        instanceFactory.put(tag, instance);
+      }
     }
   }
 
   /// Gets the created value from the module
-  T get<T>({String tag}) {
+  T? get<T>({String? tag}) {
     var name = T.toString();
     var injectFactory = injectMap[T];
 
@@ -96,13 +93,6 @@ abstract class BaseDimeModule with Closable {
     } else {
       return null;
     }
-  }
-
-  /// Injects the created value from the module
-  /// [Deprecated] - use [get]
-  @deprecated
-  T inject<T>({String tag}) {
-    return get(tag: tag);
   }
 
   /// Closes the module and all its [InjectFactory].
