@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dime/dime.dart';
-import 'package:dime/src/dime_module.dart';
 import 'package:fimber/fimber.dart';
 import 'package:test/test.dart';
 
@@ -25,7 +24,6 @@ void main() {
 
     test('inject on class MyTitleService', () {
       var textService = dimeGet<MyTitleService>();
-      assert(textService is MyTitleService);
       expect(textService.text(), "My text title");
     });
 
@@ -42,7 +40,6 @@ void main() {
 
     test('inject on class MyTooltipService', () {
       var textService = dimeGet<MyTooltipService>();
-      assert(textService is MyTooltipService);
       expect(textService.text(), "test tooltip");
     });
 
@@ -65,12 +62,10 @@ void main() {
       expect(textService.text(), "Some description for tests. COPY");
 
       var titleService = dimeGet<MyTitleService>();
-      assert(titleService is MyTitleService);
       expect(titleService.text(), "Test title_COPY");
 
       // instance not replaced by new module override
       var tooltipService = dimeGet<MyTooltipService>();
-      assert(tooltipService is MyTooltipService);
       expect(tooltipService.text(), "test tooltip");
     });
   });
@@ -85,15 +80,12 @@ void main() {
       var textFuture = await dimeGetAsync<My2TitleService>();
       My2TitleService service;
       service = await dimeGetAsync();
-      assert(textFuture is My2TitleService);
-
       expect(service.text(), 'Test Future Service');
       expect(textFuture.text(), 'Test Future Service');
     });
 
     test('inject with tag', () {
       var titleService = dimeGetWithTag<MyTitleService>("Test tag");
-      assert(titleService is MyTitleService);
       expect(titleService.text(), "second title");
     });
 
@@ -159,7 +151,7 @@ class SinglesModule extends BaseDimeModule {
   @override
   void updateInjections() {
     addSingleByCreator((tag) async {
-      return Future.delayed(Duration(seconds: 2), () {
+      return Future.delayed(const Duration(seconds: 2), () {
         return My2TitleService();
       });
     });

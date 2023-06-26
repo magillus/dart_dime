@@ -1,3 +1,5 @@
+## 0.5.0 - Full nullsafety sound added dart 2.12+ ready for flutter 3.
+
 ## 0.4.0 - Small async fetch
 - added method `dimeGetAsync` which wraps type of Future casting.
 

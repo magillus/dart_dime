@@ -51,8 +51,7 @@ abstract class BaseDimeModule with Closable {
       }
       if (instanceFactory is SingleInjectFactory<T>) {
         // remove from single ad make it taggable factory
-        var oldSingleInjectFactory =
-            (instanceFactory as SingleInjectFactory<T>);
+        var oldSingleInjectFactory = instanceFactory;
         instanceFactory = SingleByTagInstanceFactory<T>();
         _injectMap[T] = instanceFactory;
         if (oldSingleInjectFactory.localSingleton != null) {
@@ -81,7 +80,7 @@ abstract class BaseDimeModule with Closable {
           injectFactory.createTagged(tag ?? InjectTagFactory.defaultTag);
       Fimber.d("Injecting: $name for tag $tag with $instance");
       return instance;
-    } else if (injectFactory != null && injectFactory is InjectFactory) {
+    } else if (injectFactory != null) {
       if (tag != null && tag != InjectTagFactory.defaultTag) {
         return null; // Dime not provide providing instance,
         // because tagged instance was expected.
