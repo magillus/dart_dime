@@ -8,74 +8,6 @@ import 'common.dart';
 import 'dime_base.dart';
 import 'dime_module.dart';
 
-// ignore: avoid_classes_with_only_static_members
-/// Main Dime Dependency Injection Framework utility class
-/// After installing a module we can access module's instances via [get].
-/// [Deprecated] due to static method access do not need class.
-@deprecated
-class Dime {
-  /// Fetches a value and returns it base on [T] type
-  /// and instance identifier [tag].
-  static T getWithTag<T>(String tag) {
-    return dimeGetWithTag(tag);
-  }
-
-  /// Fetches a value and returns it base on [T] type
-  /// and instance identifier [tag].
-  /// [Deprecated] - use [getWithTag] method.
-  @deprecated
-  static T injectWithTag<T>(String tag) {
-    return dimeGetWithTag(tag);
-  }
-
-  /// Fetches a value and returns based on [T] type
-  /// and optional instance identifier [tag].
-  static T get<T>({String tag}) {
-    return dimeGet(tag: tag);
-  }
-
-  /// Fetches a value and returns based on [T] type
-  /// and optional instance identifier [tag].
-  /// [Deprecated] - use [get] method.
-  @deprecated
-  static T inject<T>({String tag}) {
-    return dimeGet(tag: tag);
-  }
-
-  /// Adds child scope to this scope.
-  static void addScope(DimeScope scope) {
-    dimeAddScope(scope);
-  }
-
-  /// Opens a scope by name,
-  /// will return the created scope.
-  static DimeScope openScope(String name) {
-    return dimeOpenScope(name);
-  }
-
-  /// Closes scope by name or scope
-  static void closeScope({String name, DimeScope scope}) {
-    dimeCloseScope(name: name, scope: scope);
-  }
-
-  /// Clears all modules
-  static void clearAll() {
-    dimeReset();
-  }
-
-  /// Uninstalls module with closing any [Closable] instances in the module
-  static void uninstallModule(BaseDimeModule module) {
-    dimeUninstall(module);
-  }
-
-  /// Installs [module] in the Dime root scope.
-  /// [override] if set True it will override any currently inject
-  /// factory for the type/tag
-  static void installModule(BaseDimeModule module, {bool override = false}) {
-    dimeInstall(module, override: override);
-  }
-}
-
 final DimeScope _rootScope = DimeScope("root");
 
 /// Returns Dime root scope - top level scope for the Isolate.
@@ -89,7 +21,7 @@ T dimeGetWithTag<T>(String tag) {
 
 /// Fetches a value and returns based on [T] type
 /// and optional instance identifier [tag].
-T dimeGet<T>({String tag}) {
+T dimeGet<T>({String? tag}) {
   var instance = _rootScope.get<T>(tag: tag);
   if (instance == null) {
     throw DimeException.factoryNotFound(type: T);
@@ -98,10 +30,20 @@ T dimeGet<T>({String tag}) {
   }
 }
 
+/// Fetches a value and returns based on [T] type
+/// and optional instance identifier [tag].
+T? dimeGetOrNull<T>({String? tag}) {
+  var instance = _rootScope.getOrNull<T>(tag: tag);
+  if (instance == null) {
+    Fimber.w("No instance for $T");
+  }
+  return instance;
+}
+
 /// Fetches a Future of the type [T]
 /// with optional tag identifier [tag].
-FutureOr<T> dimeGetAsync<T>({String tag}) async {
-  var instance = _rootScope.get<Future<T>>(tag:tag);
+FutureOr<T> dimeGetAsync<T>({String? tag}) async {
+  var instance = _rootScope.get<Future<T>>(tag: tag);
   if (instance == null) {
     throw DimeException.factoryNotFound(type: T);
   } else {
@@ -116,7 +58,7 @@ void dimeAddScope(DimeScope scope) {
 
 /// Gets the scope from root Scope by name.
 /// Will return null if no scope found.
-DimeScope dimeGetScope(String name) {
+DimeScope? dimeGetScope(String name) {
   return _rootScope.getScope(name);
 }
 
@@ -135,7 +77,7 @@ DimeScope dimeOpenScope(String name) {
 }
 
 /// Closes scope by name or scope
-void dimeCloseScope({String name, DimeScope scope}) {
+void dimeCloseScope({String? name, DimeScope? scope}) {
   if (name != null) {
     _rootScope.closeScope(name: name);
   } else if (scope != null) {

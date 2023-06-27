@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text("Home Page"),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("PAGE A"),
                 onPressed: () {
                   Navigator.of(context).push(
@@ -91,7 +91,7 @@ class TestAPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text("Test Page A"),
-              RaisedButton(
+              ElevatedButton(
                 child: Text("PAGE A 1"),
                 onPressed: () {},
               )

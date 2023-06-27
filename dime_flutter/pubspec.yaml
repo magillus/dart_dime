@@ -1,17 +1,17 @@
 name: dime_flutter
 description: Flutter support for Dime dependency injection. Will provide scoped widgets and
   helping methods to use Dime with in Flutter codebase.
-version: 0.4.0
+version: 0.6.0
 homepage: https://github.com/magillus/dart_dime
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  dime: ^0.4.0
-  fimber: ^0.4.0
+  dime: ^0.6.0
+  fimber: ^0.7.0
 
 dev_dependencies:
   flutter_test:

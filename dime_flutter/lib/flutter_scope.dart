@@ -11,7 +11,10 @@ class DimeScopeFlutter extends StatefulWidget {
 
   /// Wraps [child] with a scope by [scopeName] and defined [modules]
   DimeScopeFlutter(
-      {Key key, this.scopeName, this.child, this.modules = const []})
+      {Key? key,
+      required this.scopeName,
+      required this.child,
+      this.modules = const []})
       : super(key: key);
 
   @override
@@ -21,10 +24,10 @@ class DimeScopeFlutter extends StatefulWidget {
 }
 
 class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
-  DimeScope scope;
+  DimeScope? scope;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return "ScopeFlutterState(${scope?.name ?? "none"}";
   }
 
@@ -45,24 +48,28 @@ class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
     var parentScope = DimeFlutter.scopeOf(context);
     scope = DimeScope(widget.scopeName, parent: parentScope);
     for (var module in widget.modules) {
-      scope.installModule(module);
+      scope?.installModule(module);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return DimeFlutter(scope, child: widget.child);
+    if (scope != null) {
+      return DimeFlutter(scope!, child: widget.child);
+    } else {
+      return widget.child;
+    }
   }
 }
 
 /// Provider of the current Dime Scope.
 /// It will store in tree of widgets the scope opened. and with [scopeOf] will provide that scope
-class DimeFlutter extends InheritedWidget {
+class or extends InheritedWidget {
   /// [DimeScope] that can be accessed from [child] widgets.
   final DimeScope scope;
 
   /// Creates DimeFlutter scope [InheritedWidget].
-  DimeFlutter(this.scope, {Widget child}) : super(child: child);
+  DimeFlutter(this.scope, {required Widget child}) : super(child: child);
 
   /// Checks if update should notify other widgets about change.
   /// For this checks if scope changed.
@@ -88,7 +95,7 @@ class DimeFlutter extends InheritedWidget {
   }
 
   /// will get a type [T] from DimeScope in widget tree.
-  static T get<T>(BuildContext context, {String tag}) {
+  static T get<T>(BuildContext context, {String? tag}) {
     return scopeOf(context).get(tag: tag);
   }
 }

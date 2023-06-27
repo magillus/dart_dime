@@ -57,10 +57,10 @@ void main() {
 ///
 class DimeScopeTests {
   static void testScopes() {
-    DimeScope scope1;
-    DimeScope scope2;
-    DimeScope scope21;
-    DimeScope scope22;
+    late DimeScope scope1;
+    late DimeScope scope2;
+    late DimeScope scope21;
+    late DimeScope scope22;
 
     group('Dime inject - scoped', () {
       setUp(() {
@@ -80,7 +80,7 @@ class DimeScopeTests {
         scope22.installModule(ModuleB());
       });
 
-      test('test same scope by name',() {
+      test('test same scope by name', () {
         var sa = dimeOpenScope('my-test');
         sa.installModule(ModuleA());
         var sb = dimeOpenScope('my-test');
@@ -95,35 +95,17 @@ class DimeScopeTests {
         // ignore: unnecessary_lambdas
         expectException(() => dimeGet<AB>(), DimeException);
 
-        expect(scope2
-            .get<CA>()
-            .runtimeType, CA);
-        expect(scope1
-            .get<CA>()
-            .runtimeType, CA);
-        expect(scope1
-            .get<AA>()
-            .runtimeType, AA);
+        expect(scope2.get<CA>().runtimeType, CA);
+        expect(scope1.get<CA>().runtimeType, CA);
+        expect(scope1.get<AA>().runtimeType, AA);
         expectException(() => scope2.get<BC>(), DimeException);
-        expect(scope2
-            .get<AB>()
-            .runtimeType, AB);
+        expect(scope2.get<AB>().runtimeType, AB);
 
-        expect(scope21
-            .get<AA>()
-            .runtimeType, AA);
-        expect(scope21
-            .get<CC>()
-            .runtimeType, CC);
-        expect(scope22
-            .get<AC>()
-            .runtimeType, AC);
-        expect(scope22
-            .get<CB>()
-            .runtimeType, CB);
-        expect(scope21
-            .get<BB>()
-            .runtimeType, BB);
+        expect(scope21.get<AA>().runtimeType, AA);
+        expect(scope21.get<CC>().runtimeType, CC);
+        expect(scope22.get<AC>().runtimeType, AC);
+        expect(scope22.get<CB>().runtimeType, CB);
+        expect(scope21.get<BB>().runtimeType, BB);
       });
     });
   }

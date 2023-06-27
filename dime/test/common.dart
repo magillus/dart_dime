@@ -64,7 +64,6 @@ class My2TitleService extends TextService {
   String text() {
     return 'Test Future Service';
   }
-
 }
 
 /// Sample Title service that implements [TextService]
@@ -93,7 +92,7 @@ abstract class TextService {
 }
 
 class DetailsService {
-  TextService title = dimeGet<MyTitleService>();
-  TextService description = dimeGet<MyDescriptionService>();
-  TextService tooltip = dimeGet<MyTooltipService>();
+  TextService? title = dimeGet<MyTitleService>();
+  TextService? description = dimeGet<MyDescriptionService>();
+  TextService? tooltip = dimeGet<MyTooltipService>();
 }

@@ -1,3 +1,7 @@
+## 0.6.0 - Null safety
+- added nullsafty for release,
+- removed Dime.### static deprecated methods
+
 ## 0.4.0 - Small async fetch
 - added method `dimeGetAsync` which wraps type of Future casting.
 
