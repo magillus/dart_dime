@@ -1,5 +1,4 @@
 import 'package:dime/dime.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
 
 /// Wraps a [child] with Dime scope implementation.
@@ -11,7 +10,10 @@ class DimeScopeFlutter extends StatefulWidget {
 
   /// Wraps [child] with a scope by [scopeName] and defined [modules]
   DimeScopeFlutter(
-      {Key key, this.scopeName, this.child, this.modules = const []})
+      {Key? key,
+      required this.scopeName,
+      required this.child,
+      this.modules = const []})
       : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class DimeScopeFlutter extends StatefulWidget {
 }
 
 class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
-  DimeScope scope;
+  DimeScope? scope;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
@@ -39,19 +41,28 @@ class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
     super.dispose();
   }
 
+  DimeScope _createScope() {
+    var parentScope = DimeFlutter.scopeOf(context);
+    return DimeScope(widget.scopeName, parent: parentScope);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var parentScope = DimeFlutter.scopeOf(context);
-    scope = DimeScope(widget.scopeName, parent: parentScope);
     for (var module in widget.modules) {
-      scope.installModule(module);
+      scope?.installModule(module);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return DimeFlutter(scope, child: widget.child);
+    final mainScope = scope;
+    if (mainScope == null) {
+      final newScope = _createScope();
+      return DimeFlutter(newScope, child: widget.child);
+    } else {
+      return DimeFlutter(mainScope, child: widget.child);
+    }
   }
 }
 
@@ -62,7 +73,7 @@ class DimeFlutter extends InheritedWidget {
   final DimeScope scope;
 
   /// Creates DimeFlutter scope [InheritedWidget].
-  DimeFlutter(this.scope, {Widget child}) : super(child: child);
+  DimeFlutter(this.scope, {required Widget child}) : super(child: child);
 
   /// Checks if update should notify other widgets about change.
   /// For this checks if scope changed.
@@ -82,13 +93,12 @@ class DimeFlutter extends InheritedWidget {
     if (dimeFlutter != null) {
       return dimeFlutter.scope;
     } else {
-      Fimber.i("No scope - will return root scope.");
       return dimeRootScope;
     }
   }
 
   /// will get a type [T] from DimeScope in widget tree.
-  static T get<T>(BuildContext context, {String tag}) {
+  static T get<T>(BuildContext context, {String? tag}) {
     return scopeOf(context).get(tag: tag);
   }
 }

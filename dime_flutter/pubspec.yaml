@@ -11,10 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   dime: ^0.7.0
-  fimber: ^0.7.0
 
 dev_dependencies:
   test: '^1.24.1'
-  flutter_lints: '^2.0.0'
+  flutter_lints: '^2.0.1'
 
 flutter:

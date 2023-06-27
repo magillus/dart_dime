@@ -58,8 +58,7 @@ class RedThemeGenerator extends ThemeGenerator {
   @override
   ThemeData updateTheme(ThemeData themeData) {
     var newTheme = themeData.copyWith(
-      primaryColor: Colors.blue,
-      accentColor: Colors.red,
+      colorScheme: ColorScheme.fromSwatch(),
       textTheme: themeData.textTheme
           .apply(displayColor: Colors.white, bodyColor: Colors.white),
     );

@@ -1,3 +1,7 @@
+## 0.7.0 - dart nullability and flutter 3 udpates
+
+- removing fimber dependency
+
 ## 0.4.0 - Following `dime` versioning
 
 ## 0.3.5 - Following `dime` versioning
