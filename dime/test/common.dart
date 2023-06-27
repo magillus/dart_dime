@@ -1,5 +1,4 @@
 import 'package:dime/dime.dart';
-import 'package:fimber/fimber.dart';
 import 'package:test/test.dart';
 
 typedef Runner = void Function();
@@ -39,7 +38,7 @@ class MyTooltipService extends TextService {
   String tooltip;
 
   MyTooltipService({this.tooltip = "empty tooltip"}) {
-    Fimber.i("Creatig instance of Tooltip Service: $tooltip");
+    print("Creatig instance of Tooltip Service: $tooltip\n");
   }
 
   @override
@@ -71,7 +70,7 @@ class MyTitleService extends TextService {
   String title;
 
   MyTitleService({this.title = "My text title"}) {
-    Fimber.i("Creating instance of MyTitleService: $title");
+    print("Creating instance of MyTitleService: $title\n");
   }
 
   @override

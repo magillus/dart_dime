@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:core' as prefix0;
 import 'dart:core';
 
-import 'package:fimber/fimber.dart';
-
 import 'common.dart';
 import 'dime_base.dart';
 import 'dime_module.dart';
@@ -53,7 +51,6 @@ DimeScope? dimeGetScope(String name) {
 DimeScope dimeOpenScope(String name) {
   var currentScope = dimeGetScope(name);
   if (currentScope != null) {
-    Fimber.w("Scope $name was already created.");
     return currentScope;
   }
   var scope = DimeScope(name);

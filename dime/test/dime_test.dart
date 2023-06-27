@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:dime/dime.dart';
-import 'package:fimber/fimber.dart';
 import 'package:test/test.dart';
 
 import 'common.dart';
 import 'scope_test.dart';
 
 void main() {
-  Fimber.plantTree(DebugTree());
-
   group('Dime inject', () {
     setUp(() {
       dimeReset();

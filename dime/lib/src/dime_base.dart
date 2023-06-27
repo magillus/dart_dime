@@ -3,7 +3,6 @@ import 'dart:core';
 
 import 'common.dart';
 import 'factories.dart';
-import 'package:fimber/fimber.dart';
 
 import 'dime_module.dart';
 
@@ -50,8 +49,6 @@ class DimeScope extends Closable {
         for (var currentModule in _modules) {
           if (currentModule != module &&
               currentModule.injectMap.containsKey(newModuleType)) {
-            Fimber.i(
-                "Overriding $newModuleType in current module: $currentModule");
             // todo  Do we need to resolve duplicate per tag?
             // cleanup removed factory
             Closable.closeWith(currentModule.injectMap[newModuleType]);

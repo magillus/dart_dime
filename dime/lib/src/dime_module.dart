@@ -1,5 +1,3 @@
-import 'package:fimber/fimber.dart';
-
 import 'common.dart';
 import 'factories.dart';
 
@@ -71,14 +69,12 @@ abstract class BaseDimeModule with Closable {
 
   /// Gets the created value from the module
   T? get<T>({String? tag}) {
-    var name = T.toString();
     var injectFactory = injectMap[T];
 
     if (injectFactory != null && injectFactory is InjectTagFactory) {
       // use default tag for TaggedInjectFactory
       var instance =
           injectFactory.createTagged(tag ?? InjectTagFactory.defaultTag);
-      Fimber.d("Injecting: $name for tag $tag with $instance");
       return instance;
     } else if (injectFactory != null) {
       if (tag != null && tag != InjectTagFactory.defaultTag) {
@@ -86,7 +82,6 @@ abstract class BaseDimeModule with Closable {
         // because tagged instance was expected.
       } else {
         var instance = injectFactory.create();
-        Fimber.d("Injecting: $name with $instance");
         return instance;
       }
     } else {
