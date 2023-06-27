@@ -64,7 +64,7 @@ class _DimeScopeFlutterState extends State<DimeScopeFlutter> {
 
 /// Provider of the current Dime Scope.
 /// It will store in tree of widgets the scope opened. and with [scopeOf] will provide that scope
-class DimeFlutter extends InheritedWidget {
+class or extends InheritedWidget {
   /// [DimeScope] that can be accessed from [child] widgets.
   final DimeScope scope;
 

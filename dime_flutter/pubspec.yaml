@@ -5,13 +5,13 @@ version: 0.6.0
 homepage: https://github.com/magillus/dart_dime
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   dime: ^0.6.0
-  fimber: ^0.6.1
+  fimber: ^0.7.0
 
 dev_dependencies:
   flutter_test:
